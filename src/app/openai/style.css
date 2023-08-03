@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  display: flex;
+  background-color: red;
+  width: 100px;
+  height: 200px;
+}
