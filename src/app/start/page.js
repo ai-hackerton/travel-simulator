@@ -6,6 +6,7 @@ import StaticRoadView from "../components/map/StaticRoadView";
 import StartingModal from "../components/modal/StartingModal";
 import { handleGetAudio } from "../constants/deepgram";
 import useTravelSettingsStore from "../store/travelSettings";
+import MapSelect from "../components/start/MapSelect";
 
 export default function StartingPage() {
   const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
@@ -76,6 +77,16 @@ export default function StartingPage() {
               <div onClick={() => setDate("3박 4일")}>3박 4일</div>
             </div>
           )}
+        </>
+      );
+      break;
+    case 4:
+      content = (
+        <>
+          <p className="font-medium text-white text-lg">
+            어디로 가고 싶으신가요?
+          </p>
+          <MapSelect />
         </>
       );
       break;
