@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import StaticRoadView from "../components/map/StaticRoadView";
 import StartingModal from "../components/modal/StartingModal";
 import { handleGetAudio } from "../constants/deepgram";
+import useTravelSettingsStore from "../store/travelSettings";
 
 export default function StartingPage() {
   const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
@@ -12,9 +13,10 @@ export default function StartingPage() {
   const [date, setDate] = useState(""); // string: 여행 기간
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
+  const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
 
   useEffect(() => {
-    // handleGetAudio(setTranscript);
+    // handleGetAudio(setTranscript); // 음성 인식
   }, []);
 
   useEffect(() => {
@@ -85,10 +87,12 @@ export default function StartingPage() {
   const handleNextProcess = () => {
     if (processStatus === 1 && name) {
       setProcessStatus((prevStatus) => prevStatus + 1);
+      setTravelSettings(name);
     } else if (processStatus === 2) {
       setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 3 && date) {
       setProcessStatus((prevStatus) => prevStatus + 1);
+      setTravelSettings(date);
     }
   };
 
@@ -127,7 +131,7 @@ export default function StartingPage() {
   };
 
   return (
-    <div>
+    <>
       <StaticRoadView
         lat={37.5756}
         lng={126.9768}
@@ -136,6 +140,6 @@ export default function StartingPage() {
         fov={100}
       />
       <StartingModal content={content} onClick={handleNextProcess} />
-    </div>
+    </>
   );
 }
