@@ -1,19 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import RoadView from "../components/map/RoadView";
+import StaticRoadView from "../components/map/StaticRoadView";
 import StartingModal from "../components/modal/StartingModal";
+import { handleGetAudio } from "../constants/deepgram";
 
 export default function StartingPage() {
-  const [processStatus, setProcessStatus] = useState(1);
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
+  const [name, setName] = useState(""); // string: 여행자 이름
+  const [date, setDate] = useState(""); // string: 여행 기간
+  const [transcript, setTranscript] = useState(""); // string: 음성 응답
+  const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
 
+  useEffect(() => {
+    // handleGetAudio(setTranscript);
+  }, []);
+
+  useEffect(() => {
+    handleVoiceAnswer();
+  }, [transcript]);
+
+  // 대화창에 출력되는 콘텐츠
   let content;
-
   switch (processStatus) {
+    // 이름 입력
     case 1:
       content = (
         <>
@@ -29,6 +40,7 @@ export default function StartingPage() {
         </>
       );
       break;
+    // 이름 입력 완료
     case 2:
       content = (
         <p className="font-medium text-white text-lg text-center">
@@ -37,6 +49,7 @@ export default function StartingPage() {
         </p>
       );
       break;
+    // 여행 기간 입력
     case 3:
       content = (
         <>
@@ -68,7 +81,8 @@ export default function StartingPage() {
       content = null;
   }
 
-  const handleModalClick = () => {
+  // Process 다음으로 넘기기
+  const handleNextProcess = () => {
     if (processStatus === 1 && name) {
       setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 2) {
@@ -78,10 +92,50 @@ export default function StartingPage() {
     }
   };
 
+  // Process 이전으로 돌리기
+  const handleBackProcess = () => {
+    if (processStatus === 2) {
+      setProcessStatus((prevStatus) => prevStatus - 1);
+    } else if (processStatus === 3) {
+      setProcessStatus((prevStatus) => prevStatus - 1);
+    } else if (processStatus === 4) {
+      setProcessStatus((prevStatus) => prevStatus - 1);
+    }
+  };
+
+  // 말하기를 통해 핸들링
+  const handleVoiceAnswer = () => {
+    if (
+      transcript === "그래" ||
+      transcript === "응" ||
+      transcript === "네" ||
+      transcript === "좋아" ||
+      transcript === "다음" ||
+      transcript === "좋았어" ||
+      transcript === "예"
+    ) {
+      handleNextProcess();
+      setTranscript("");
+    } else if (
+      transcript === "아니" ||
+      transcript === "이전" ||
+      transcript === "뒤로"
+    ) {
+      handleBackProcess();
+      setTranscript("");
+    }
+  };
+
   return (
     <div>
-      <RoadView />
-      <StartingModal content={content} onClick={handleModalClick} />
+      <StaticRoadView
+        lat={37.5756}
+        lng={126.9768}
+        pan={2}
+        tilt={40}
+        fov={100}
+      />
+      <StartingModal content={content} onClick={handleNextProcess} />
     </div>
   );
 }

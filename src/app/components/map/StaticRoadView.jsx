@@ -1,16 +1,16 @@
 "use client";
 import { useEffect } from "react";
 
-export default function RoadView() {
+export default function StaticRoadView({ lat, lng, pan, tilt, fov }) {
   useEffect(() => {
     if (window.naver && window.naver.maps) {
       var pano = new window.naver.maps.Panorama("pano", {
-        position: new window.naver.maps.LatLng(37.5756, 126.9768), // 초기 설정: 경복궁
+        position: new window.naver.maps.LatLng(lat, lng), // 초기 설정: 경복궁
         // 시야 설정
         pov: {
-          pan: 2,
-          tilt: 40,
-          fov: 100,
+          pan: pan,
+          tilt: tilt,
+          fov: fov,
         },
       });
 
