@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  env: {
-    openAiKey: "asdfasdf1234143",
-  },
-};
+const nextConfig = {}
 
-module.exports = nextConfig;
+module.exports = nextConfig
