@@ -37,7 +37,7 @@ export default function StartingPage() {
             당신의 이름을 알려주세요!
           </p>
           <input
-            className="bg-gray-500 bg-opacity-80 px-4 py-2 rounded-xl"
+            className="bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}

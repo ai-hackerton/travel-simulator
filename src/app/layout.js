@@ -1,8 +1,11 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
 import Script from "next/script";
+import localFont from "next/font/local";
 
-const inter = Inter({ subsets: ["latin"] });
+// Local Font: PRETENDARD
+export const Pretendard = localFont({
+  src: "../../public/fonts/PretendardVariable.woff2",
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -25,7 +28,7 @@ export default function RootLayout({ children }) {
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=panorama`}
         ></Script>
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={Pretendard.className}>{children}</body>
     </html>
   );
 }
