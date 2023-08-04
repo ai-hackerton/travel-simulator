@@ -3,9 +3,11 @@
 import useMapDisplay from "@/app/store/mapDisplay";
 import { useEffect } from "react"
 
-export default function MapModal({ location }) {
+export default function MapModal() {
     const isVisible = useMapDisplay((state) => state.mapDisplay);
     const hideMap = useMapDisplay((state) => state.hideMap);
+
+    const location = [37.7637611, 128.8990861];
 
     useEffect(() => {
         if (isVisible && window.naver && window.naver.maps) {
