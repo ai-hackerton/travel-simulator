@@ -6,17 +6,16 @@ import robotImage from "/public/images/robot-head.png";
 import backIcon from "/public/icons/back-arrow.png";
 import mapIcon from "/public/icons/map.png";
 import nextIcon from "/public/icons/conversation-next.png";
+import useMapDisplay from "@/app/store/mapDisplay";
 
-export default function BottomModal({ day, text, showMap, handleNext, handleBack }) {
+export default function BottomModal({ day, text, handleNext, handleBack }) {
     const [currentText, setCurrentText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [nextAbled, setNextAbled] = useState(false);
 
-    const handleBackClick = () => {
-        // 이전 화면으로
-    };
+    const showMap = useMapDisplay((state) => state.showMap);
 
-    // 타이핑 효과 (*근데 지도 띄울 때마다 실행됨)
+    // 타이핑 효과
     useEffect(() => {
         if (currentIndex < text.length) {
             const timeout = setTimeout(() => {
