@@ -12,6 +12,8 @@ export default function StartingPage() {
   const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
   const [name, setName] = useState(""); // string: 여행자 이름
   const [date, setDate] = useState(""); // string: 여행 기간
+  const [city, setCity] = useState("강릉시"); // string: 여행 장소
+  const [startLocation, setStartLocation] = useState(""); // string: 시작 장소
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
@@ -80,6 +82,7 @@ export default function StartingPage() {
         </>
       );
       break;
+    // 여행 장소 선정
     case 4:
       content = (
         <>
@@ -87,6 +90,49 @@ export default function StartingPage() {
             어디로 가고 싶으신가요?
           </p>
           <MapSelect />
+        </>
+      );
+      break;
+    // 시뮬레이션 시작 장소
+    case 5:
+      content = (
+        <>
+          <p
+            className="font-medium text-white text-lg text-center"
+            style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
+          >
+            시뮬레이션을 시작할 장소를 골라주세요.
+          </p>
+          <div className="w-full flex flex-col justify-center items-center gap-y-4">
+            <button
+              className="rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-black text-black"
+              onClick={() => setStartLocation("강릉역")}
+            >
+              강릉역
+            </button>
+            <button
+              className="rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-black text-black"
+              onClick={() => setStartLocation("강릉 시외버스터미널")}
+            >
+              강릉 시외버스터미널
+            </button>
+          </div>
+        </>
+      );
+      break;
+    // 여행 시뮬레이션 설정 확인
+    case 6:
+      content = (
+        <>
+          <p className="font-medium text-white text-lg">{date}</p>
+          <p className="font-medium text-white text-lg">{city}</p>
+          <p className="font-medium text-white text-lg">{startLocation}</p>
+          <p
+            className="font-medium text-white text-lg text-center"
+            style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
+          >
+            이 조건으로 시뮬레이션을 시작해볼까요?
+          </p>
         </>
       );
       break;
@@ -104,6 +150,13 @@ export default function StartingPage() {
     } else if (processStatus === 3 && date) {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(date);
+    } else if (processStatus === 4) {
+      setProcessStatus((prevStatus) => prevStatus + 1);
+    } else if (processStatus === 5 && startLocation) {
+      setProcessStatus((prevStatus) => prevStatus + 1);
+      setTravelSettings(startLocation);
+    } else if (processStatus === 6) {
+      setProcessStatus((prevStatus) => prevStatus + 1);
     }
   };
 
@@ -114,6 +167,10 @@ export default function StartingPage() {
     } else if (processStatus === 3) {
       setProcessStatus((prevStatus) => prevStatus - 1);
     } else if (processStatus === 4) {
+      setProcessStatus((prevStatus) => prevStatus - 1);
+    } else if (processStatus === 5) {
+      setProcessStatus((prevStatus) => prevStatus - 1);
+    } else if (processStatus === 6) {
       setProcessStatus((prevStatus) => prevStatus - 1);
     }
   };

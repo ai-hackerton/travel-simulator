@@ -1,3 +1,5 @@
+// d3.js 로 구현 예정
+
 import React from "react";
 import Image from "next/image";
 
