@@ -2,20 +2,23 @@
 
 import { useState } from "react";
 import BottomModal from "../components/modal/BottomModal";
-import FilteredOptionModal from "../components/modal/FilteredOptionModal";
+import PlaceOptionModal from "../components/modal/PlaceOptionModal";
 import MapModal from "../components/modal/MapModal";
 import OptionModal from "../components/modal/OptionModal";
+import ImageModal from "../components/modal/ImageModal";
 
 
 export default function SimulationPage() {
     const [currentPage, setCurrentPage] = useState(0);
     const [showMap, setShowMap] = useState(false);
 
+    // zustand로 정리할 예정
+
     const day = 1;
     const place = "강릉역";
     const location = [37.7637611, 128.8990861];
 
-    const allPages = ["Arrival", "SelectType", "SelectPlace", "Moving"];
+    const allPages = ["Arrival", "SelectType", "SelectPlace", "Overview", "Moving"];
 
     const goNextPage = () => {
         if (currentPage < allPages.length - 1) {
@@ -41,6 +44,8 @@ export default function SimulationPage() {
             case 2:
                 return <SelectPlacePage />;
             case 3:
+                return <OverviewPage />;
+            case 4:
                 return <MovingPage />;
     }}
 
@@ -71,10 +76,23 @@ export default function SimulationPage() {
 
     function SelectPlacePage() {
         return <>
-            <FilteredOptionModal/>
+            <PlaceOptionModal/>
             <BottomModal
                 day={day}
                 text={`가까운 ~~~ 몇 군데를 추천해드릴게요`} 
+                showMap={() => setShowMap(true)}
+                handleNext={goNextPage}
+                handleBack={goPrevPage}
+            />
+        </>
+    }
+
+    function OverviewPage() {
+        return <>
+            <ImageModal/>
+            <BottomModal
+                day={day}
+                text={`강릉 사천면 모래내한과마을은 전통방식으로 맛있는 한과를 생산하는 고소득 마을입니다.`} 
                 showMap={() => setShowMap(true)}
                 handleNext={goNextPage}
                 handleBack={goPrevPage}

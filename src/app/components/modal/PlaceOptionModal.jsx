@@ -9,11 +9,11 @@ import listIcon from "public/icons/list.png";
 import ListModal from "./ListModal";
 import CarouselModal from "./CarouselModal";
 
-export default function FilteredOptionModal() {
+export default function PlaceOptionModal() {
     const [isCarousel, setIsCarousel] = useState(true);
 
     return (
-        <div className="w-full h-[242px] absolute top-[40%] transform -translate-y-1/2">
+        <div className="w-full h-[250px] absolute top-[40%] transform -translate-y-1/2">
             <DropDown />
             <FormButton isCarousel={isCarousel} setIsCarousel={setIsCarousel} />
             {isCarousel ?
@@ -34,7 +34,7 @@ function DropDown() {
     }
 
     return (
-        <div className="absolute left-[4.17%] -top-10">
+        <div className="absolute left-[4.17%] -top-10 z-50">
             <div
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-max h-8 px-2.5 bg-black/80 rounded-lg flex flex-row items-center">

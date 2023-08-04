@@ -1,6 +1,6 @@
 export default function ListModal() {
     return (
-        <div className="w-full h-full flex flex-col items-center space-y-[14px] relative overflow-y-scroll">
+        <div className="w-full h-full flex flex-col items-center pt-1.5 space-y-[14px] relative overflow-y-scroll">
             <OptionButton text="관광지 갈래" />
             <OptionButton text="숙소 갈래" />
             <OptionButton text="음식점 갈래" />
