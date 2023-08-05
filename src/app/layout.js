@@ -28,7 +28,9 @@ export default function RootLayout({ children }) {
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=panorama`}
         ></Script>
       </head>
-      <body className={Pretendard.className}>{children}</body>
+      <body className={Pretendard.className}>
+        <div className="select-none">{children}</div>
+      </body>
     </html>
   );
 }

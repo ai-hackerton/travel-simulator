@@ -10,9 +10,6 @@ module.exports = {
       height: {
         screen: "100dvh",
       },
-      height: {
-        screen: "100dvh",
-      },
       boxShadow: {
         DEFAULT: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
       },
@@ -21,7 +18,7 @@ module.exports = {
       white: "#ffffff",
       black: "#000000",
       main: {
-        100: "#C63C3C",
+        100: "#EB7A7A",
         200: "#DA5D5D",
         300: "#C63C3C",
       },

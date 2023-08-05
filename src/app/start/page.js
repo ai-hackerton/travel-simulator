@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import StaticRoadView from "../components/map/StaticRoadView";
 import StartingModal from "../components/modal/StartingModal";
@@ -9,6 +10,7 @@ import useTravelSettingsStore from "../store/travelSettings";
 import MapSelect from "../components/start/MapSelect";
 
 export default function StartingPage() {
+  const router = useRouter();
   const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
   const [name, setName] = useState(""); // string: 여행자 이름
   const [date, setDate] = useState(""); // string: 여행 기간
@@ -70,13 +72,33 @@ export default function StartingPage() {
           </div>
           {isDropdownOpen && (
             <div
-              className="bg-gray-500 bg-opacity-80 px-4 py-2 rounded-xl mt-1"
+              className="flex flex-row flex-nowrap overflow-x-auto gap-x-2 scroll-smooth"
               style={{ cursor: "pointer" }}
             >
-              <div onClick={() => setDate("당일치기")}>당일치기</div>
-              <div onClick={() => setDate("1박 2일")}>1박 2일</div>
-              <div onClick={() => setDate("2박 3일")}>2박 3일</div>
-              <div onClick={() => setDate("3박 4일")}>3박 4일</div>
+              <div
+                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
+                onClick={() => setDate("당일치기")}
+              >
+                당일치기
+              </div>
+              <div
+                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
+                onClick={() => setDate("1박 2일")}
+              >
+                1박 2일
+              </div>
+              <div
+                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
+                onClick={() => setDate("2박 3일")}
+              >
+                2박 3일
+              </div>
+              <div
+                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
+                onClick={() => setDate("3박 4일")}
+              >
+                3박 4일
+              </div>
             </div>
           )}
         </>
@@ -105,13 +127,13 @@ export default function StartingPage() {
           </p>
           <div className="w-full flex flex-col justify-center items-center gap-y-4">
             <button
-              className="rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-black text-black"
+              className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
               onClick={() => setStartLocation("강릉역")}
             >
               강릉역
             </button>
             <button
-              className="rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-black text-black"
+              className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
               onClick={() => setStartLocation("강릉 시외버스터미널")}
             >
               강릉 시외버스터미널
@@ -124,14 +146,26 @@ export default function StartingPage() {
     case 6:
       content = (
         <>
-          <p className="font-medium text-white text-lg">{date}</p>
-          <p className="font-medium text-white text-lg">{city}</p>
-          <p className="font-medium text-white text-lg">{startLocation}</p>
+          <div className="w-full flex flex-col gap-y-1 justify-center items-center">
+            <p className="font-medium text-white text-lg">
+              <span className="text-red-100">여행 기간: </span>
+              {date}
+            </p>
+            <p className="font-medium text-white text-lg">
+              <span className="text-red-100">여행 도시: </span>
+              {city}
+            </p>
+            <p className="font-medium text-white text-lg">
+              <span className="text-red-100">시작 장소: </span>
+              {startLocation}
+            </p>
+          </div>
           <p
             className="font-medium text-white text-lg text-center"
             style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
           >
-            이 조건으로 시뮬레이션을 시작해볼까요?
+            위의 조건으로 <br />
+            시뮬레이션을 시작해볼까요?
           </p>
         </>
       );
@@ -156,7 +190,7 @@ export default function StartingPage() {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(startLocation);
     } else if (processStatus === 6) {
-      setProcessStatus((prevStatus) => prevStatus + 1);
+      router.push("/simulation");
     }
   };
 
