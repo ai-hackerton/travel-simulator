@@ -1,19 +1,19 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomModal from "../components/simulation/BottomModal";
 import PlaceOptionModal from "../components/simulation/PlaceOptionModal";
 import MapModal from "../components/simulation/MapModal";
-import OptionModal from "../components/simulation/OptionModal";
+import TypeOptionModal from "../components/simulation/TypeOptionModal";
 import ImageModal from "../components/simulation/ImageModal";
 import useSimulationIndex from "../store/simulationIndex";
+import PlaceLabel from "../components/simulation/PlaceLabel";
+import useCurrentStatus from "../store/currentStatus";
+import { fetchLocationBasedTourData } from "@/api/tourApi";
 
 
 export default function SimulationPage() {
     const { currentIndex } = useSimulationIndex();
-
-    const day = 1;
-    const place = "강릉역";
 
     function CurrentPage() {
         switch (currentIndex) {
@@ -29,54 +29,6 @@ export default function SimulationPage() {
                 return <MovingPage />;
     }}
 
-    function ArrivalPage() {
-        return <>
-            <BottomModal 
-                day={day} 
-                text={`휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`} 
-            />
-        </>
-    }
-
-    function SelectTypePage() {
-        return <>
-            <OptionModal/>
-            <BottomModal
-                day={day}
-                text={`머시기~ 이제 어디를 가볼까요?`} 
-            />
-        </>
-    }
-
-    function SelectPlacePage() {
-        return <>
-            <PlaceOptionModal/>
-            <BottomModal
-                day={day}
-                text={`가까운 ~~~ 몇 군데를 추천해드릴게요`} 
-            />
-        </>
-    }
-
-    function OverviewPage() {
-        return <>
-            <ImageModal/>
-            <BottomModal
-                day={day}
-                text={`강릉 사천면 모래내한과마을은 전통방식으로 맛있는 한과를 생산하는 고소득 마을입니다.`} 
-            />
-        </>
-    }
-
-    function MovingPage() {
-        return <>
-            <BottomModal
-                day={day}
-                text={`~로 이동 중입니다`} 
-            />
-        </>
-    }
-    
 
     return (
         <div className="w-full h-screen bg-[#9ca3af]">
@@ -84,4 +36,88 @@ export default function SimulationPage() {
             <MapModal />
         </div>
     );
+}
+
+
+function ArrivalPage() {
+    const { place } = useCurrentStatus();
+    const bottomText = `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`;
+
+    return <>
+        <PlaceLabel/>
+        <BottomModal 
+            text={bottomText} 
+            canGoNext={true}
+        />
+    </>
+}
+
+
+function SelectTypePage() {
+    const bottomText = `머시기~ 이제 어디를 가볼까요?`;
+
+    return <>
+        <PlaceLabel/>
+        <TypeOptionModal/>
+        <BottomModal
+            text={bottomText} 
+            canGoNext={false}
+        />
+    </>
+}
+
+
+function SelectPlacePage() {
+    const { location, contentTypeId } = useCurrentStatus();
+    const [placeList, setPlaceList] = useState(null);
+
+    const bottomText = `가까운 ~~~ 몇 군데를 추천해드릴게요`;
+
+    useEffect(() => {
+        if (!placeList) {
+            const fetchData = async () => {
+                try {
+                    var dataList = await fetchLocationBasedTourData(location.x, location.y, contentTypeId, 2000);
+                    setPlaceList(dataList);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            fetchData();
+        }
+        console.log(placeList);
+    }, [placeList]);    
+
+    
+    return <>
+        <PlaceLabel/>
+        <PlaceOptionModal placeList={placeList} />
+        <BottomModal
+            text={bottomText} 
+            canGoNext={false}
+        />
+    </>
+}
+
+
+function OverviewPage() {
+    return <>
+        <PlaceLabel/>
+        <ImageModal/>
+        <BottomModal
+            text={`강릉 사천면 모래내한과마을은 전통방식으로 맛있는 한과를 생산하는 고소득 마을입니다.`} 
+            canGoNext={true}
+        />
+    </>
+}
+
+
+function MovingPage() {
+    return <>
+        <PlaceLabel/>
+        <BottomModal
+            text={`~로 이동 중입니다`} 
+            canGoNext={true}
+        />
+    </>
 }

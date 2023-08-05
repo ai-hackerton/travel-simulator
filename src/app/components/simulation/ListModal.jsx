@@ -1,22 +1,23 @@
-export default function ListModal() {
+import OptionButton from "./OptionButton"
+import useCurrentStatus from "@/app/store/currentStatus";
+import useSimulationIndex from "@/app/store/simulationIndex";
+
+export default function ListModal({ placeList }) {
+    const { setContentId } = useCurrentStatus();
+    const { increaseIndex: goNextPage } = useSimulationIndex();
+
+    const handleButtonClick = (contentId) => {
+        setContentId(contentId)
+        goNextPage();
+    }
+
+    const skeleton = <></>;
+
     return (
         <div className="w-full h-full flex flex-col items-center pt-1.5 space-y-[14px] relative overflow-y-scroll">
-            <OptionButton text="관광지 갈래" />
-            <OptionButton text="숙소 갈래" />
-            <OptionButton text="음식점 갈래" />
-            <OptionButton text="집 갈래" />
-            <OptionButton text="집 갈래" />
-            <OptionButton text="집 갈래" />
-        </div>
-    )
-}
-
-function OptionButton({ text }) {
-    return (
-        <div className="w-11/12 h-[50px] bg-white/80 rounded-lg shadow">
-            <h3 className="text-lg text-black font-medium text-center leading-[50px]">
-                {text}
-            </h3>
+            {placeList ?
+                placeList.map((place, index) => <OptionButton key={index} text={place.title} onClick={() => handleButtonClick(place.contentid)} />) :
+                skeleton}
         </div>
     )
 }

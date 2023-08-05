@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   module: {
     rules: [
       {
@@ -8,4 +9,9 @@ module.exports = {
       },
     ],
   },
-};
+  images: {
+    domains: ['tong.visitkorea.or.kr']
+  }
+}
+
+module.exports = nextConfig

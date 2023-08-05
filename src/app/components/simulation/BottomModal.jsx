@@ -8,16 +8,16 @@ import mapIcon from "/public/icons/map.png";
 import nextIcon from "/public/icons/conversation-next.png";
 import useMapDisplay from "@/app/store/mapDisplay";
 import useSimulationIndex from "@/app/store/simulationIndex";
+import useCurrentStatus from "@/app/store/currentStatus";
 
-export default function BottomModal({ day, text }) {
+export default function BottomModal({ text, canGoNext }) {
+    const { currentIndex: currentPage, increaseIndex: goNextPage, decreaseIndex: goPrevPage } = useSimulationIndex();
+    const { day } = useCurrentStatus();
+    const { showMap } = useMapDisplay();
+
     const [currentText, setCurrentText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [nextAbled, setNextAbled] = useState(false);
-
-    const currentPage = useSimulationIndex((state) => state.currentIndex);
-    const goNextPage = useSimulationIndex((state) => state.increaseIndex);
-    const goPrevPage = useSimulationIndex((state) => state.decreaseIndex);
-    const showMap = useMapDisplay((state) => state.showMap);
 
     // 타이핑 효과
     useEffect(() => {
@@ -29,7 +29,7 @@ export default function BottomModal({ day, text }) {
 
             return () => clearTimeout(timeout);
         } else {
-            setNextAbled(true);
+            if (canGoNext) setNextAbled(true);
         }
     }, [currentIndex, text]);
 
