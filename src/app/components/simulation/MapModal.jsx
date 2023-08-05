@@ -1,18 +1,17 @@
 "use client"
 
 import useMapDisplay from "@/app/store/mapDisplay";
+import useCurrentStatus from "@/app/store/currentStatus";
 import { useEffect } from "react"
 
 export default function MapModal() {
-    const isVisible = useMapDisplay((state) => state.mapDisplay);
-    const hideMap = useMapDisplay((state) => state.hideMap);
-
-    const location = [37.7637611, 128.8990861];
+    const { mapDisplay: isVisible, hideMap } = useMapDisplay();
+    const { location } = useCurrentStatus();
 
     useEffect(() => {
         if (isVisible && window.naver && window.naver.maps) {
             var mapRef = new window.naver.maps.Map("map", {
-                center: new window.naver.maps.LatLng(location[0], location[1]),
+                center: new window.naver.maps.LatLng(location.y, location.x),
                 zoomControl: false,
                 scaleControl: false,
                 logoControl: false,
@@ -23,7 +22,7 @@ export default function MapModal() {
             });
 
             var marker = new window.naver.maps.Marker({
-                position: new window.naver.maps.LatLng(location[0], location[1]),
+                position: new window.naver.maps.LatLng(location.y, location.x),
                 map: mapRef,
                 // icon: {
                 //     url: '',

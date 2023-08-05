@@ -6,7 +6,7 @@ export default function ImageModal() {
 
     return (
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex justify-center items-center">
-            <div className="w-[316px] h-auto absolute top-[40%] transform -translate-y-1/2" >
+            <div className="w-[316px] h-auto absolute top-[38%] transform -translate-y-1/2" >
                 <div className="w-min h-7 bg-black/50 rounded-[10px] text-sm text-white font-normal leading-5 py-1 px-2.5 whitespace-pre mb-2.5">
                     #전통한과   #갈골한과   #호당농가소득
                 </div>
