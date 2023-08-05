@@ -185,7 +185,7 @@ export default function StartingPage() {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(date);
     } else if (processStatus === 4) {
-      setProcessStatus((prevStatus) => prevStatus + 1);
+      // setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(city);
     } else if (processStatus === 5 && startLocation) {
       setProcessStatus((prevStatus) => prevStatus + 1);
