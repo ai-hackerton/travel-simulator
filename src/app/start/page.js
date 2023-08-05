@@ -14,7 +14,7 @@ export default function StartingPage() {
   const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
   const [name, setName] = useState(""); // string: 여행자 이름
   const [date, setDate] = useState(""); // string: 여행 기간
-  const [city, setCity] = useState("강릉시"); // string: 여행 장소
+  const [city, setCity] = useState(""); // string: 여행 장소
   const [startLocation, setStartLocation] = useState(""); // string: 시작 장소
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
@@ -111,7 +111,7 @@ export default function StartingPage() {
           <p className="font-medium text-white text-lg">
             어디로 가고 싶으신가요?
           </p>
-          <MapSelect />
+          <MapSelect city={city} setCity={setCity} />
         </>
       );
       break;
@@ -185,7 +185,8 @@ export default function StartingPage() {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(date);
     } else if (processStatus === 4) {
-      // setProcessStatus((prevStatus) => prevStatus + 1);
+      setProcessStatus((prevStatus) => prevStatus + 1);
+      setTravelSettings(city);
     } else if (processStatus === 5 && startLocation) {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(startLocation);
