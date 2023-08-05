@@ -1,4 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
-
-module.exports = nextConfig
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.geojson$/,
+        loader: "jsonc-loader",
+        type: "javascript/auto",
+      },
+    ],
+  },
+};
