@@ -4,31 +4,25 @@ import { useState } from "react";
 import Image from "next/image"
 import downIcon from "public/icons/dropdown-down.png";
 import upIcon from "public/icons/dropdown-up.png";
+import carouselIcon from "public/icons/carousel.png";
+import listIcon from "public/icons/list.png";
+import ListModal from "./ListModal";
+import CarouselModal from "./CarouselModal";
 
-export default function FilteredOptionModal() {
+export default function PlaceOptionModal() {
+    const [isCarousel, setIsCarousel] = useState(true);
+
     return (
-        <div className="w-full h-[242px] absolute top-[45%] transform -translate-y-1/2">
-            <div className="w-full h-full flex flex-col items-center space-y-[14px] relative">
-                <OptionButton text="관광지 갈래" />
-                <OptionButton text="숙소 갈래" />
-                <OptionButton text="음식점 갈래" />
-                <OptionButton text="집 갈래" />
-                <DropDown />
-            </div>
+        <div className="w-full h-[250px] absolute top-[40%] transform -translate-y-1/2">
+            <DropDown />
+            <FormButton isCarousel={isCarousel} setIsCarousel={setIsCarousel} />
+            {isCarousel ?
+                <CarouselModal /> :
+                <ListModal />}
         </div>
     )
 }
 
-
-function OptionButton({ text }) {
-    return (
-        <div className="w-11/12 h-[50px] bg-white/80 rounded-lg shadow">
-            <h3 className="text-lg text-black font-medium text-center leading-[50px]">
-                {text}
-            </h3>
-        </div>
-    )
-}
 
 function DropDown() {
     const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +34,7 @@ function DropDown() {
     }
 
     return (
-        <div className="absolute left-[4.17%] -top-14">
+        <div className="absolute left-[4.17%] -top-10 z-50">
             <div
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-max h-8 px-2.5 bg-black/80 rounded-lg flex flex-row items-center">
@@ -60,6 +54,20 @@ function DropDown() {
                         ))}
                     </ul>
                 </div>}
+        </div>
+    )
+}
+
+
+function FormButton({ isCarousel, setIsCarousel }) {
+    return (
+        <div
+            onClick={() => setIsCarousel(!isCarousel)}
+            className="w-8 h-8 rounded-[10px] bg-black/70 shadow flex justify-center items-center absolute right-[4.17%] -top-10">
+            {isCarousel ?
+                <Image src={carouselIcon} width={26} height={26} alt="캐러셀 아이콘" /> :
+                <Image src={listIcon} width={19} height={15} alt="리스트 아이콘" />
+            }
         </div>
     )
 }
