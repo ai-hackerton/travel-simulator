@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import StaticRoadView from "../components/map/StaticRoadView";
 import BottomModal from "../components/simulation/BottomModal";
 import PlaceOptionModal from "../components/simulation/PlaceOptionModal";
 import MapModal from "../components/simulation/MapModal";
@@ -14,6 +15,7 @@ import { fetchLocationBasedTourData } from "@/api/tourApi";
 
 export default function SimulationPage() {
     const { currentIndex } = useSimulationIndex();
+    const { location } = useCurrentStatus();
 
     function CurrentPage() {
         switch (currentIndex) {
@@ -31,10 +33,17 @@ export default function SimulationPage() {
 
 
     return (
-        <div className="w-full h-screen bg-[#9ca3af]">
+        <>
+            <StaticRoadView
+                lat={location.y}
+                lng={location.x}
+                pan={2}
+                tilt={40}
+                fov={100}
+            />
             <CurrentPage />
             <MapModal />
-        </div>
+        </>
     );
 }
 
