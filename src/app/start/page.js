@@ -164,7 +164,7 @@ export default function StartingPage() {
             className="font-medium text-white text-lg text-center"
             style={{ whiteSpace: "normal", wordBreak: "keep-all" }}
           >
-            위의 조건으로 <br />
+            위 조건으로 <br />
             시뮬레이션을 시작해볼까요?
           </p>
         </>
