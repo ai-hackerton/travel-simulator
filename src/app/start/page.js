@@ -23,7 +23,7 @@ export default function StartingPage() {
   const [name, setName] = useState(""); // string: 여행자 이름
   const [date, setDate] = useState(""); // string: 여행 기간
   const [city, setCity] = useState(""); // string: 여행 장소
-  const [startLocation, setStartLocation] = useState(""); // string: 시작 장소
+  const [startLocation, setStartLocation] = useState(null); // string: 시작 장소
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
@@ -138,7 +138,7 @@ export default function StartingPage() {
                 <button
                   key={"location_index_" + idx}
                   className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
-                  onClick={() => setStartLocation(el.title)}
+                  onClick={() => setStartLocation(el)}
                 >
                   {el.title}
                 </button>
@@ -163,7 +163,7 @@ export default function StartingPage() {
             </p>
             <p className="font-medium text-white text-lg">
               <span className="text-red-100">시작 장소: </span>
-              {startLocation}
+              {startLocation?.title}
             </p>
           </div>
           <p
