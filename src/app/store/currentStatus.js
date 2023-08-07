@@ -11,7 +11,7 @@ const useCurrentStatus = create((set) => ({
     setPlace: (newPlace) => set(() => ({ place: newPlace })),
 
     location: { x: 128.8990861, y: 37.7637611 },
-    setLocation: (newX, newY) => set(() => ({ location: { x: newX, y: newY } })),
+    setLocation: (newX, newY) => set(() => ({ location: { x: parseFloat(newX), y: parseFloat(newY) } })),
 
     // 선택지에 따른 다음 장소 정보
     contentTypeId: null,

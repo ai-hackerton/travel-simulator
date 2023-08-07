@@ -21,7 +21,7 @@ export default function StaticRoadView({ lat, lng, pan, tilt, fov }) {
     } else {
       console.log("Naver Maps API not loaded.");
     }
-  }, []);
+  }, [lat, lng]);
 
   return <div id="pano" className="w-screen h-screen"></div>;
 }
