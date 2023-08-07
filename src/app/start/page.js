@@ -3,11 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+//components
 import StaticRoadView from "../components/map/StaticRoadView";
 import StartingModal from "../components/modal/StartingModal";
 import { handleGetAudio } from "../constants/deepgram";
 import useTravelSettingsStore from "../store/travelSettings";
 import MapSelect from "../components/start/MapSelect";
+
+//hooks
+import { useStartings } from "@/hooks/useStartings";
 
 export default function StartingPage() {
   const router = useRouter();
@@ -19,6 +23,11 @@ export default function StartingPage() {
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
+
+  const { filteredPlaces } = useStartings(city);
+  console.log("filtered!!: ", filteredPlaces);
+
+  const testing = [{ title: "강릉역" }, { title: "안녕" }];
 
   useEffect(() => {
     // handleGetAudio(setTranscript); // 음성 인식
@@ -126,18 +135,17 @@ export default function StartingPage() {
             시뮬레이션을 시작할 장소를 골라주세요.
           </p>
           <div className="w-full flex flex-col justify-center items-center gap-y-4">
-            <button
-              className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
-              onClick={() => setStartLocation("강릉역")}
-            >
-              강릉역
-            </button>
-            <button
-              className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
-              onClick={() => setStartLocation("강릉 시외버스터미널")}
-            >
-              강릉 시외버스터미널
-            </button>
+            {filteredPlaces?.map((el, idx) => {
+              return (
+                <button
+                  key={"location_index_" + idx}
+                  className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
+                  onClick={() => setStartLocation(el.title)}
+                >
+                  {el.title}
+                </button>
+              );
+            })}
           </div>
         </>
       );
@@ -185,7 +193,7 @@ export default function StartingPage() {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(date);
     } else if (processStatus === 4) {
-      // setProcessStatus((prevStatus) => prevStatus + 1);
+      setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(city);
     } else if (processStatus === 5 && startLocation) {
       setProcessStatus((prevStatus) => prevStatus + 1);

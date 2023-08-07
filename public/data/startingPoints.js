@@ -1,4 +1,4 @@
-[
+export const startings = [
   {
     area: "강릉시",
     points: [
