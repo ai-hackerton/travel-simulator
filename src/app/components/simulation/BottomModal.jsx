@@ -9,10 +9,12 @@ import nextIcon from "/public/icons/conversation-next.png";
 import useMapDisplay from "@/app/store/mapDisplay";
 import useSimulationIndex from "@/app/store/simulationIndex";
 import useCurrentStatus from "@/app/store/currentStatus";
+import useSimulationHistory from "@/app/store/simulationHistory";
 
-export default function BottomModal({ text, canGoNext }) {
+export default function BottomModal({ text, canGoNext, goNextIndex }) {
     const { currentIndex: currentPage, increaseIndex: goNextPage, decreaseIndex: goPrevPage } = useSimulationIndex();
     const { day } = useCurrentStatus();
+    const { deleteEvent } = useSimulationHistory();
     const { showMap } = useMapDisplay();
 
     const [currentText, setCurrentText] = useState('');
@@ -33,13 +35,32 @@ export default function BottomModal({ text, canGoNext }) {
         }
     }, [currentIndex, text]);
 
-    // 타이핑 효과 스킵
-    const skipAnimation = () => {
+
+    const onClickModal = () => {
+        // 타이핑 효과 스킵
         if (currentText != text) {
             setCurrentIndex(text.length);
             setCurrentText(text);
+            return;
         }
-    };
+        // 다음 화면
+        if (nextAbled) {
+            if (currentPage == 3) { // Overview Page
+                setCurrentText('');
+                setCurrentIndex(0);
+                goNextIndex();
+            } else {
+                goNextPage();
+            }
+        }
+    }
+
+    const onClickBack = () => {
+        if (currentPage == 0) {
+            deleteEvent();
+        }
+        goPrevPage();
+    }
 
 
     return (
@@ -50,12 +71,11 @@ export default function BottomModal({ text, canGoNext }) {
                         DAY {day}
                     </h3>
                 </div>
-                {currentPage > 0 &&
-                    <div
-                        onClick={goPrevPage}
-                        className="w-8 h-8 rounded-[10px] bg-black/70 shadow flex justify-center items-center">
-                        <Image src={backIcon} width={25} height={25} alt="뒤로가기 아이콘" className="ml-px mb-[1.5px]" />
-                    </div>}
+                <div
+                    onClick={onClickBack}
+                    className="w-8 h-8 rounded-[10px] bg-black/70 shadow flex justify-center items-center">
+                    <Image src={backIcon} width={25} height={25} alt="뒤로가기 아이콘" className="ml-px mb-[1.5px]" />
+                </div>
                 <div
                     onClick={showMap}
                     className="w-8 h-8 rounded-[10px] bg-black/70 shadow flex justify-center items-center">
@@ -63,7 +83,7 @@ export default function BottomModal({ text, canGoNext }) {
                 </div>
             </div>
             <div
-                onClick={skipAnimation}
+                onClick={onClickModal}
                 className="w-11/12 h-[126px] bg-black/70 rounded-[10px] shadow p-5 relative">
                 <Image src={robotImage} width={150} height={150} alt="로봇 이미지" className="absolute -top-28 -left-5" />
                 <p id="chat" className="text-center text-base text-white font-medium">
@@ -71,7 +91,6 @@ export default function BottomModal({ text, canGoNext }) {
                 </p>
                 {nextAbled &&
                     <div
-                        onClick={goNextPage}
                         className="w-6 h-6 flex justify-center items-center absolute bottom-3 right-4 animate-pulse">
                         <Image src={nextIcon} width={15} height={9} alt="다음 아이콘" />
                     </div>}

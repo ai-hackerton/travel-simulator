@@ -81,7 +81,7 @@ export default function CarouselModal({ placeList }) {
                         </SwiperSlide>
                     ))}
                 </Swiper> :
-                <div className="w-auto h-[200px] mx-[4.17%] rounded-[10px] bg-white/80" />}
+                <div className="w-auto h-[200px] mx-[4.17%] rounded-[10px] bg-white/80 animation-pulse" />}
             <div
                 onClick={handleButtonClick}
                 className="w-11/12 h-11 bg-white/80 rounded-lg mt-2.5 shadow">
