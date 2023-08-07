@@ -89,6 +89,7 @@ function SelectTypePage() {
 
 
 // 2
+// TODO: 아무것도 없는 경우에 처리해야함
 function SelectPlacePage() {
     const { location, contentTypeId } = useCurrentStatus();
     const [placeList, setPlaceList] = useState(null);
