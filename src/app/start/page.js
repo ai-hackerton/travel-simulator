@@ -12,6 +12,7 @@ import MapSelect from "../components/start/MapSelect";
 
 //hooks
 import { useStartings } from "@/hooks/useStartings";
+import { contourDensity } from "d3";
 
 //data
 const DATES_ARR = ["당일치기", "1박 2일", "2박 3일", "3박 4일"];
@@ -22,12 +23,14 @@ export default function StartingPage() {
   const [name, setName] = useState(""); // string: 여행자 이름
   const [date, setDate] = useState(""); // string: 여행 기간
   const [city, setCity] = useState(""); // string: 여행 장소
-  const [startLocation, setStartLocation] = useState(""); // string: 시작 장소
+  const [startLocation, setStartLocation] = useState(null); // string: 시작 장소
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
 
   const { filteredPlaces } = useStartings(city);
+
+  console.log("travelSettings: ", travelSettings);
 
   useEffect(() => {
     // handleGetAudio(setTranscript); // 음성 인식
@@ -115,7 +118,7 @@ export default function StartingPage() {
           >
             안녕 눌러바..
           </div> */}
-          {city !== "" && <div  className="text-white">{city}</div>}
+          {city !== "" && <div className="text-white">{city}</div>}
         </>
       );
       break;
@@ -135,7 +138,7 @@ export default function StartingPage() {
                 <button
                   key={"location_index_" + idx}
                   className="w-4/5 rounded-xl bg-white hover:bg-red-300 focus:bg-red-300 px-4 py-2 font-bold text-gray-800"
-                  onClick={() => setStartLocation(el.title)}
+                  onClick={() => setStartLocation(el)}
                 >
                   {el.title}
                 </button>
@@ -160,7 +163,7 @@ export default function StartingPage() {
             </p>
             <p className="font-medium text-white text-lg">
               <span className="text-red-100">시작 장소: </span>
-              {startLocation}
+              {startLocation?.title}
             </p>
           </div>
           <p
@@ -182,20 +185,24 @@ export default function StartingPage() {
     e.preventDefault();
     if (processStatus === 1 && name) {
       setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(name);
     } else if (processStatus === 2) {
       setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 3 && date) {
       setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(date);
     } else if (processStatus === 4 && city) {
       // TODO: 여기 핸들러 만지기
-      // setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(city);
+      setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 5 && startLocation) {
       setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(startLocation);
     } else if (processStatus === 6) {
+      // 선택 완료시 저장하고 넘어가기
+      setTravelSettings({
+        name,
+        date,
+        city,
+        startLocation,
+      });
+
       router.push("/simulation");
     }
   };
