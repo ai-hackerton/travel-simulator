@@ -16,13 +16,18 @@ import useSimulationIndex from "../store/simulationIndex";
 import useCurrentStatus from "../store/currentStatus";
 import useSimulationHistory from "../store/simulationHistory";
 
-import { fetchLocationBasedTourData } from "@/api/tourApi";
+import { fetchLocationBasedTourData, fetchTourDetailCommon } from "@/api/tourApi";
 import carImage from "/public/images/car.png";
+import useTravelSettingsStore from "../store/travelSettings";
 
 
 export default function SimulationPage() {
     const { currentIndex } = useSimulationIndex();
     const { location } = useCurrentStatus();
+
+    useEffect(() => {
+        console.log(location);
+    }, []);
 
     function CurrentPage() {
         switch (currentIndex) {
@@ -37,7 +42,7 @@ export default function SimulationPage() {
             case 4:
                 return <MovingPage />;
     }}
-
+ 
 
     return (
         <>
@@ -75,13 +80,35 @@ function ArrivalPage() {
 
 // 1
 function SelectTypePage() {
-    const bottomText = `머시기~ 이제 어디를 가볼까요?`;
+    const { day } = useCurrentStatus();
+    const { simulationHistory } = useSimulationHistory();
+    const { travelSettings } = useTravelSettingsStore();
+    const [ text, setText ] = useState("");
+    const [ end, setEnd ] = useState();
+
+    useEffect(() => {
+        const today = simulationHistory.filter(x => x.day == day).length;
+        if (today >= 5) {
+            if ((travelSettings[1] == '당일치기' && day == 1) ||
+                (travelSettings[1] == '1박 2일' && day == 2) ||
+                (travelSettings[1] == '2박 3일' && day == 3) ||
+                (travelSettings[1] == '3박 4일' && day == 4)) {
+                setEnd(true);
+                setText("대충 일정 끝났으니 시뮬레이션 종료하자는 멘트");
+            } else {
+                setEnd(false);
+                setText("오늘 벌써 5개의 일정을 소화했어요! 이제 그만 숙소에 가서 쉴까요?");
+            }
+        } else {
+            setText("머시기~ 이제 어디를 가볼까요?");
+        }
+    }, []);
 
     return <>
         <PlaceLabel/>
-        <TypeOptionModal/>
+        <TypeOptionModal singleOption={simulationHistory.filter(x => x.day == day).length >= 5} end={end} />
         <BottomModal
-            text={bottomText} 
+            text={text}
             canGoNext={false}
         />
     </>
@@ -171,8 +198,9 @@ function OverviewPage() {
 
 // 4
 function MovingPage() {
-    const { day, contentId, setPlace, setLocation } = useCurrentStatus();
-    const { addEvent } = useSimulationHistory();
+    const { travelSettings } = useTravelSettingsStore();
+    const { day, nextDay, contentTypeId, contentId, setPlace, setLocation } = useCurrentStatus();
+    const { simulationHistory, addEvent } = useSimulationHistory();
     const { increaseIndex: goNextPage } = useSimulationIndex();
 
     useEffect(() => {
@@ -183,10 +211,18 @@ function MovingPage() {
         });
 
         // 오늘 스케줄 수 +1, ArrivalPage로 이동
-        setTimeout(() => {
-            // 로컬 데이터에서 title, mapx, mapy 불러오기
-            // setPlace();
-            // setLocation();
+        setTimeout(async () => {
+            // api로 title, mapx, mapy 불러오기 (장소명, 로드뷰 업데이트)
+            const data = await fetchTourDetailCommon(contentId);
+            setPlace(data.title);
+            setLocation(data.mapx, data.mapy);
+
+            // 숙박 선택했으면 다음날로 넘어감
+            if (contentTypeId == 32) {
+                nextDay();
+            }
+            
+            // 다음페이지
             goNextPage();
         }, 2000);
     }, []);
