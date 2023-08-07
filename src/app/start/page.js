@@ -25,9 +25,7 @@ export default function StartingPage() {
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
 
   const { filteredPlaces } = useStartings(city);
-  console.log("filtered!!: ", filteredPlaces);
 
-  const testing = [{ title: "강릉역" }, { title: "안녕" }];
 
   useEffect(() => {
     // handleGetAudio(setTranscript); // 음성 인식
@@ -81,7 +79,7 @@ export default function StartingPage() {
           </div>
           {isDropdownOpen && (
             <div
-              className="flex flex-row flex-nowrap overflow-x-auto gap-x-2 scroll-smooth"
+              className="flex flex-row flex-nowrap overflow-x-auto gap-x-2 scroll-smooth scrollbar-hide"
               style={{ cursor: "pointer" }}
             >
               <div
@@ -121,6 +119,8 @@ export default function StartingPage() {
             어디로 가고 싶으신가요?
           </p>
           <MapSelect city={city} setCity={setCity} />
+          {/* <div>1234</div> */}
+          {city !== "" && <div className="text-white">{city}</div>}
         </>
       );
       break;
