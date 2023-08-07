@@ -13,6 +13,9 @@ import MapSelect from "../components/start/MapSelect";
 //hooks
 import { useStartings } from "@/hooks/useStartings";
 
+//data
+const DATES_ARR = ["당일치기", "1박 2일", "2박 3일", "3박 4일"];
+
 export default function StartingPage() {
   const router = useRouter();
   const [processStatus, setProcessStatus] = useState(1); // number: 여행 설정 절차
@@ -25,7 +28,6 @@ export default function StartingPage() {
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
 
   const { filteredPlaces } = useStartings(city);
-
 
   useEffect(() => {
     // handleGetAudio(setTranscript); // 음성 인식
@@ -82,30 +84,15 @@ export default function StartingPage() {
               className="flex flex-row flex-nowrap overflow-x-auto gap-x-2 scroll-smooth scrollbar-hide"
               style={{ cursor: "pointer" }}
             >
-              <div
-                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
-                onClick={() => setDate("당일치기")}
-              >
-                당일치기
-              </div>
-              <div
-                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
-                onClick={() => setDate("1박 2일")}
-              >
-                1박 2일
-              </div>
-              <div
-                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
-                onClick={() => setDate("2박 3일")}
-              >
-                2박 3일
-              </div>
-              <div
-                className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
-                onClick={() => setDate("3박 4일")}
-              >
-                3박 4일
-              </div>
+              {DATES_ARR.map((el, idx) => (
+                <div
+                  key={"dates_idx_" + idx}
+                  className="bg-gray-500 rounded-lg px-4 py-2 shrink-0"
+                  onClick={() => setDate(el)}
+                >
+                  {el}
+                </div>
+              ))}
             </div>
           )}
         </>
@@ -119,8 +106,16 @@ export default function StartingPage() {
             어디로 가고 싶으신가요?
           </p>
           <MapSelect city={city} setCity={setCity} />
-          {/* <div>1234</div> */}
-          {city !== "" && <div className="text-white">{city}</div>}
+
+          {/* <div
+            onClick={() => {
+              setCity("강릉시");
+            }}
+            style={{ backgroundColor: "red", width: 100, height: 100 }}
+          >
+            안녕 눌러바..
+          </div> */}
+          {city !== "" && <div  className="text-white">{city}</div>}
         </>
       );
       break;
@@ -183,7 +178,8 @@ export default function StartingPage() {
   }
 
   // Process 다음으로 넘기기
-  const handleNextProcess = () => {
+  const handleNextProcess = (e) => {
+    e.preventDefault();
     if (processStatus === 1 && name) {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(name);
@@ -192,8 +188,9 @@ export default function StartingPage() {
     } else if (processStatus === 3 && date) {
       setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(date);
-    } else if (processStatus === 4) {
-      setProcessStatus((prevStatus) => prevStatus + 1);
+    } else if (processStatus === 4 && city) {
+      // TODO: 여기 핸들러 만지기
+      // setProcessStatus((prevStatus) => prevStatus + 1);
       setTravelSettings(city);
     } else if (processStatus === 5 && startLocation) {
       setProcessStatus((prevStatus) => prevStatus + 1);
