@@ -12,6 +12,7 @@ import MapSelect from "../components/start/MapSelect";
 
 //hooks
 import { useStartings } from "@/hooks/useStartings";
+import { contourDensity } from "d3";
 
 //data
 const DATES_ARR = ["당일치기", "1박 2일", "2박 3일", "3박 4일"];
@@ -28,6 +29,8 @@ export default function StartingPage() {
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
 
   const { filteredPlaces } = useStartings(city);
+
+  console.log("travelSettings: ", travelSettings);
 
   useEffect(() => {
     // handleGetAudio(setTranscript); // 음성 인식
@@ -115,7 +118,7 @@ export default function StartingPage() {
           >
             안녕 눌러바..
           </div> */}
-          {city !== "" && <div  className="text-white">{city}</div>}
+          {city !== "" && <div className="text-white">{city}</div>}
         </>
       );
       break;
@@ -182,20 +185,24 @@ export default function StartingPage() {
     e.preventDefault();
     if (processStatus === 1 && name) {
       setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(name);
     } else if (processStatus === 2) {
       setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 3 && date) {
       setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(date);
     } else if (processStatus === 4 && city) {
       // TODO: 여기 핸들러 만지기
-      // setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(city);
+      setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 5 && startLocation) {
       setProcessStatus((prevStatus) => prevStatus + 1);
-      setTravelSettings(startLocation);
     } else if (processStatus === 6) {
+      // 선택 완료시 저장하고 넘어가기
+      setTravelSettings({
+        name,
+        date,
+        city,
+        startLocation,
+      });
+
       router.push("/simulation");
     }
   };
