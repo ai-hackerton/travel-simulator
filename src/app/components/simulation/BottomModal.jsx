@@ -10,11 +10,12 @@ import useMapDisplay from "@/app/store/mapDisplay";
 import useSimulationIndex from "@/app/store/simulationIndex";
 import useCurrentStatus from "@/app/store/currentStatus";
 import useSimulationHistory from "@/app/store/simulationHistory";
+import { fetchTourDetailCommon } from "@/api/tourApi";
 
 export default function BottomModal({ text, canGoNext, goNextIndex }) {
     const { currentIndex: currentPage, increaseIndex: goNextPage, decreaseIndex: goPrevPage } = useSimulationIndex();
-    const { day } = useCurrentStatus();
-    const { deleteEvent } = useSimulationHistory();
+    const { day, prevDay, setPlace, setLocation } = useCurrentStatus();
+    const { simulationHistory, deleteEvent } = useSimulationHistory();
     const { showMap } = useMapDisplay();
 
     const [currentText, setCurrentText] = useState('');
@@ -55,9 +56,21 @@ export default function BottomModal({ text, canGoNext, goNextIndex }) {
         }
     }
 
-    const onClickBack = () => {
+    const onClickBack = async () => {
         if (currentPage == 0) {
+            // 시뮬레이션 기록 삭제
             deleteEvent();
+
+            // 이전 장소 이름, 위도경도로 변경
+            const prevContentId = simulationHistory.at(-1).contentId;
+            const data = await fetchTourDetailCommon(prevContentId);
+            setPlace(data.title);
+            setLocation(data.mapx, data.mapy);
+
+            // 하루의 첫 번째 장소였으면 day -1
+            if (simulationHistory.filter(x => x.day == day).length == 0) {
+                prevDay();
+            }
         }
         goPrevPage();
     }
