@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import data from "public/geo/map.json";
 
-export default function MapSelect({ city, setCity }) {
+export default function MapSelect({ city, setCity, setIsCityClicked }) {
   const mapRef = useRef(null);
   const selectedAreaRef = useRef(null);
   const originalColorsRef = useRef({});
@@ -81,6 +81,8 @@ export default function MapSelect({ city, setCity }) {
 
     // 도시 설정
     setCity(d.properties.SGG_NM);
+    setIsCityClicked(true);
+    event.stopPropagation();
 
     // 이미 선택된 지역과 현재 클릭한 지역이 다르다면 선택한 지역을 업데이트하고 색상 변경
     if (selectedArea !== clickedArea) {
