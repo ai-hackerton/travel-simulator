@@ -36,9 +36,9 @@ export const userExists = async (name) => {
     try {
         const nameSnapshot = await get(ref(database, "/users"));
         const nameExists = Object.values(nameSnapshot.val()).includes(name);
-        const recordSnapshot = await get(ref(database, "/records/" + name));
-        const recordExists = recordSnapshot.exists();
-        return nameExists && recordExists;
+        // const recordSnapshot = await get(ref(database, "/records/" + name));
+        // const recordExists = recordSnapshot.exists();
+        return nameExists;
     } catch (error) {
         console.log(error);
         return null;
