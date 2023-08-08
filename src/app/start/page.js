@@ -53,7 +53,7 @@ export default function StartingPage() {
           </p>
           <div className="w-full">
             <input
-              className="bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black"
+              className="w-full bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
