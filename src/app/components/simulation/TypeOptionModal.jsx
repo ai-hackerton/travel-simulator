@@ -5,12 +5,17 @@ import { useRouter } from "next/navigation";
 import useCurrentStatus from "@/app/store/currentStatus";
 import OptionButton from "./OptionButton";
 import useSimulationIndex from "@/app/store/simulationIndex";
+import useTravelSettingsStore from "@/app/store/travelSettings";
+import { uploadRecord } from "@/api/firebase";
+import useSimulationHistory from "@/app/store/simulationHistory";
 
 export default function TypeOptionModal({ singleOption, end }) {
   const router = useRouter();
 
   const { setContentTypeId } = useCurrentStatus();
   const { increaseIndex: goNextPage } = useSimulationIndex();
+  const { travelSettings } = useTravelSettingsStore();
+  const { simulationHistory } = useSimulationHistory();
 
   const handleClick = (contentTypeId) => {
     setContentTypeId(contentTypeId);
@@ -18,6 +23,8 @@ export default function TypeOptionModal({ singleOption, end }) {
   };
 
   const handleSimulationEnd = () => {
+    const name = travelSettings.name;
+    uploadRecord(name, { travelSettings: travelSettings, simulationHistory: simulationHistory });
     router.push("/result");
   };
 
