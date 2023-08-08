@@ -161,7 +161,6 @@ function SelectPlacePage() {
             dataList = filterVisitedPlaces(dataList);
             count++;
           }
-          console.log("count!! ", count);
           setPlaceList(dataList);
         } catch (error) {
           console.log(error);

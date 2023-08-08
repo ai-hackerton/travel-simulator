@@ -67,7 +67,7 @@ export default function ImageModal({ index }) {
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex justify-center items-center">
             <div className="w-[316px] h-auto absolute top-[38%] transform -translate-y-1/2" >
                 {tags.length > 0 ?
-                    <div className="w-min max-w-full h-7 bg-black/50 rounded-[10px] px-2.5 mb-2.5 overflow-x-scroll">
+                    <div className="w-min max-w-full h-7 bg-black/50 rounded-[10px] px-2.5 mb-2.5 overflow-x-scroll scrollbar-hide">
                         <p className="w-max text-sm text-white font-normal leading-7 whitespace-pre">{"#" + tags.join("   #")}</p>
                     </div> :
                     <div className="w-full h-7 bg-transparent" />}

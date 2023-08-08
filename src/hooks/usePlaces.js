@@ -22,7 +22,6 @@ export const usePlaces = () => {
     let newArr = [...arr].filter((el) => {
       return !visitedPlaces.includes(el.contentid);
     });
-    console.log("neW!!!! ", newArr);
     return newArr;
   };
 
