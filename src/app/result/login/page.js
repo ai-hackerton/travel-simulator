@@ -15,6 +15,14 @@ export default function Page() {
       { day: 1, contentid: "125658", contentTypeId: 12 },
       { day: 1, contentid: "125593", contentTypeId: 12 },
       { day: 1, contentid: "2798406", contentTypeId: 14 },
+      { day: 2, contentid: "125658", contentTypeId: 12 },
+      { day: 2, contentid: "125593", contentTypeId: 12 },
+      { day: 2, contentid: "2994116", contentTypeId: 12 },
+      { day: 2, contentid: "2798406", contentTypeId: 14 },
+      { day: 3, contentid: "2798406", contentTypeId: 14 },
+      { day: 3, contentid: "125658", contentTypeId: 12 },
+      { day: 3, contentid: "2994116", contentTypeId: 12 },
+      { day: 3, contentid: "125593", contentTypeId: 12 },
     ]);
 
     setTravelSettings({
