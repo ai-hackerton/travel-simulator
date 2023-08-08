@@ -122,7 +122,7 @@ export default function ResultList() {
                       {matchPlaceTypeFromId(parseInt(p?.contenttypeid))}
                     </p>
                     <div
-                      className=" shadow"
+                      className="shadow"
                       style={{
                         width: "100%",
                         height: 120,
@@ -139,7 +139,7 @@ export default function ResultList() {
                       />
                       <div
                         className="backdrop-blur-[1px]
-                        bg-gradient-to-t from-black/60 text-white flex flex-col p-3 
+                        bg-gradient-to-t from-black/60 flex flex-col p-3 
                         "
                         style={{
                           position: "absolute",
@@ -150,8 +150,8 @@ export default function ResultList() {
                           justifyContent: "flex-end",
                         }}
                       >
-                        <p className="text-lg text-bold">{p.title}</p>
                       </div>
+                      <p className="text-white text-lg font-normal absolute left-3 bottom-2.5">{p.title}</p>
                     </div>
                   </div>
                 </div>
