@@ -1,8 +1,9 @@
-import useSimulationHistory from "@/app/store/simulationHistory";
 import axios from "axios";
 
 const TOUR_API_KEY = process.env.NEXT_PUBLIC_TOUR_API_KEY;
 
+const proxyUrl = "https://proxy.cors.sh/";
+const proxyHeader = { headers: {'x-cors-api-key': 'temp_d8935495d1f6801efc72318abb6b473b' }};
 
  
 export const fetchLocationBasedTourData = async (locationX, locationY, contentTypeId, distance) => {
@@ -49,6 +50,8 @@ export const fetchTourDetailImage = async (contentId) => {
 }
 
 export const getFilteredList = (placeList, contentTypeId, category) => {
+
+    if (!placeList) return [];
 
     // 강원특별자치도 areacode: 32
     var placeList = placeList.filter(place => place.areacode == 32);

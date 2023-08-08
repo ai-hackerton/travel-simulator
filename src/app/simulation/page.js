@@ -158,7 +158,7 @@ function SelectPlacePage() {
               contentTypeId,
               2000 * count
             );
-            dataList = filterVisitedPlaces(dataList);
+            dataList = dataList ? filterVisitedPlaces(dataList) : [];
             count++;
           }
           setPlaceList(dataList);
