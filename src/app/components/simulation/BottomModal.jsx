@@ -97,11 +97,13 @@ export default function BottomModal({ text, canGoNext, goNextIndex }) {
             </div>
             <div
                 onClick={onClickModal}
-                className="w-11/12 h-[126px] bg-black/70 rounded-[10px] shadow p-5 relative">
-                <Image src={robotImage} width={150} height={150} alt="로봇 이미지" className="absolute -top-28 -left-5" />
-                <p id="chat" className="text-center text-base text-white font-medium">
-                    {currentText}
-                </p>
+                className="w-11/12 h-[126px] bg-black/70 rounded-[10px] shadow p-[17px] relative">
+                <Image src={robotImage} width={150} height={150} alt="로봇 이미지" className="absolute -top-[120px] -left-5" />
+                <div className="w-full h-full overflow-y-scroll">
+                    <p id="chat" className="text-center text-base text-white font-medium">
+                        {currentText}
+                    </p>
+                </div>
                 {nextAbled &&
                     <div
                         className="w-6 h-6 flex justify-center items-center absolute bottom-3 right-4 animate-pulse">

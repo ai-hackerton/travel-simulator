@@ -16,6 +16,12 @@ import useSimulationIndex from "../store/simulationIndex";
 import useCurrentStatus from "../store/currentStatus";
 import useSimulationHistory from "../store/simulationHistory";
 
+import toursData from "/public/data/places/tours.json";
+import culturalsData from "/public/data/places/culturals.json";
+import foodsData from "/public/data/places/foods.json";
+import activitiesData from "/public/data/places/activities.json";
+import accommodationsData from "/public/data/places/accommodations.json";
+
 //hooks
 import { usePlaces } from "@/hooks/usePlaces";
 
@@ -182,20 +188,33 @@ function SelectPlacePage() {
 
 // 3
 function OverviewPage() {
-  const [overviewIndex, setOverviewIndex] = useState(0);
-  const [showOption, setShowOption] = useState(false);
+  const [ overviewIndex, setOverviewIndex ] = useState(0);
+  const [ showOption, setShowOption ] = useState(false);
+  const [ texts, setText ] = useState([""]);
+  const { contentTypeId, contentId } = useCurrentStatus();
 
-  // 로컬에서 불러올 예정 (summary || overview)
-  const totalIndex = 3;
-  //   TODO: real overview or summary 로 바꾸기
-  const texts = [
-    "개요 요약 1 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
-    "개요 요약 2 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
-    "개요 요약 3 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
-  ];
+  const jsonData = {
+    12: toursData,
+    14: culturalsData,
+    28: activitiesData,
+    32: accommodationsData,
+    39: foodsData
+  }
 
+  // summary 또는 overview 불러와서 표시
+  useEffect(() => {
+    const placeData = jsonData[contentTypeId][contentId];
+    const textData = placeData.summary || placeData.overview;
+    const separators = /(?:\<br \/>|<br>|\.|\n)/;
+    const splited = textData.split(separators);
+    const filtered = splited.filter(text => text != "" && !(/^\(출처.*\)$/.test(text)) && !(/^<출처.*>$/.test(text)) && !(/^\[출처.*\]$/.test(text)));
+    const trimmed = filtered.map(text => text.trim() + ".");
+    setText(trimmed);
+  }, []);
+
+  
   const goNextIndex = () => {
-    if (overviewIndex < totalIndex - 1) {
+    if (overviewIndex < texts.length - 1) {
       // 사진 & 개요 넘기기
       setOverviewIndex(overviewIndex + 1);
     } else if (!showOption) {
