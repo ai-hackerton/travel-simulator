@@ -187,6 +187,7 @@ function OverviewPage() {
 
   // 로컬에서 불러올 예정 (summary || overview)
   const totalIndex = 3;
+  //   TODO: real overview or summary 로 바꾸기
   const texts = [
     "개요 요약 1 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
     "개요 요약 2 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
