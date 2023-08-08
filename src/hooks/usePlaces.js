@@ -71,5 +71,5 @@ export const usePlaces = () => {
     }
   };
 
-  return { filterVisitedPlaces, getPlacesFromLocalDataWithHistory };
+  return { matchPlaceTypeFromId, filterVisitedPlaces, getPlacesFromLocalDataWithHistory };
 };
