@@ -10,7 +10,7 @@ export const fetchLocationBasedTourData = async (locationX, locationY, contentTy
     const url = `http://apis.data.go.kr/B551011/KorService1/locationBasedList1?ServiceKey=${TOUR_API_KEY}&contentTypeId=${contentTypeId}&mapX=${locationX}&mapY=${locationY}&radius=${distance}&listYN=Y&MobileOS=ETC&MobileApp=AppTest&arrange=E&numOfRows=100&pageNo=1&_type=json`;
 
     try {
-        const res = await axios.get(url);
+        const res = await axios.get(proxyUrl + url, proxyHeader);
         const items = res.data.response.body.items.item;
         return items;
     } catch(error) {
@@ -23,7 +23,7 @@ export const fetchTourDetailCommon = async (contentId) => {
     const url = `http://apis.data.go.kr/B551011/KorService1/detailCommon1?ServiceKey=${TOUR_API_KEY}&contentTypeId=&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&_type=json`;
 
     try {
-        const res = await axios.get(url);
+        const res = await axios.get(proxyUrl + url, proxyHeader);
         const itemDetail = res.data.response.body.items.item[0];
         return itemDetail;
     } catch(error) {
@@ -36,7 +36,7 @@ export const fetchTourDetailImage = async (contentId) => {
     const url = `http://apis.data.go.kr/B551011/KorService1/detailImage1?ServiceKey=${TOUR_API_KEY}&contentId=${contentId}&MobileOS=ETC&MobileApp=AppTest&imageYN=Y&subImageYN=Y&numOfRows=10&_type=json`;
 
     try {
-        const res = await axios.get(url);
+        const res = await axios.get(proxyUrl + url, proxyHeader);
         const items = res.data.response.body.items;
         if (items == "") {
             console.log("No image data available");
