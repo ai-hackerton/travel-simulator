@@ -48,13 +48,13 @@ export default function StartingPage() {
     case 1:
       content = (
         <>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center gap-y-4">
             <p className="font-medium text-white text-lg">
               당신의 이름을 알려주세요!
             </p>
             <div className="w-full max-w-fit bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black">
               <input
-                className="w-full"
+                className="w-full bg-white bg-opacity-80"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
