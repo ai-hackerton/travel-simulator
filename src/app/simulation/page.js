@@ -16,6 +16,9 @@ import useSimulationIndex from "../store/simulationIndex";
 import useCurrentStatus from "../store/currentStatus";
 import useSimulationHistory from "../store/simulationHistory";
 
+//hooks
+import { usePlaces } from "@/hooks/usePlaces";
+
 import {
   fetchLocationBasedTourData,
   fetchTourDetailCommon,
@@ -89,10 +92,10 @@ function SelectTypePage() {
     const today = simulationHistory.filter((x) => x.day == day).length;
     if (today >= 5) {
       if (
-        (travelSettings[1] == "당일치기" && day == 1) ||
-        (travelSettings[1] == "1박 2일" && day == 2) ||
-        (travelSettings[1] == "2박 3일" && day == 3) ||
-        (travelSettings[1] == "3박 4일" && day == 4)
+        (travelSettings.date == "당일치기" && day == 1) ||
+        (travelSettings.date == "1박 2일" && day == 2) ||
+        (travelSettings.date == "2박 3일" && day == 3) ||
+        (travelSettings.date == "3박 4일" && day == 4)
       ) {
         setEnd(true);
         setText("대충 일정 끝났으니 시뮬레이션 종료하자는 멘트");
@@ -124,6 +127,7 @@ function SelectTypePage() {
 function SelectPlacePage() {
   const { location, contentTypeId } = useCurrentStatus();
   const [placeList, setPlaceList] = useState(null);
+  const { filterVisitedPlaces } = usePlaces();
 
   const bottomText = (contentTypeId) => {
     switch (contentTypeId) {
@@ -147,16 +151,16 @@ function SelectPlacePage() {
         try {
           let dataList = [];
           let count = 1;
-          do {
+          while (!(dataList?.length || count > 10)) {
             dataList = await fetchLocationBasedTourData(
               location.x,
               location.y,
               contentTypeId,
               2000 * count
             );
+            dataList = filterVisitedPlaces(dataList);
             count++;
-          } while (!dataList?.length || count <= 10);
-          console.log("count!! ", count);
+          }
           setPlaceList(dataList);
         } catch (error) {
           console.log(error);
@@ -218,15 +222,20 @@ function MovingPage() {
   const { travelSettings } = useTravelSettingsStore();
   const { day, nextDay, contentTypeId, contentId, setPlace, setLocation } =
     useCurrentStatus();
-  const { simulationHistory, addEvent } = useSimulationHistory();
+  const { simulationHistory, addEvent, visitedPlaces, addVisitedPlaces } =
+    useSimulationHistory();
   const { increaseIndex: goNextPage } = useSimulationIndex();
 
+  console.log("visited~ ", visitedPlaces);
   useEffect(() => {
     // 시뮬레이션 기록에 저장
     addEvent({
       day: day,
       contentId: contentId,
+      contentTypeId: contentTypeId,
     });
+
+    addVisitedPlaces(contentId);
 
     // 오늘 스케줄 수 +1, ArrivalPage로 이동
     setTimeout(async () => {
@@ -235,7 +244,7 @@ function MovingPage() {
       setPlace(data.title);
       setLocation(data.mapx, data.mapy);
 
-      // 숙박 선택했으면 다음날로 넘어감
+      // 숙박 선택했으면 다음날로 넘어감 or 당일치기인 경우
       if (contentTypeId == 32) {
         nextDay();
       }
