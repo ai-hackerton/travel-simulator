@@ -19,7 +19,7 @@ export const usePlaces = () => {
         return "레포츠";
       case 32:
         return "숙박";
-      case 30:
+      case 39:
         return "음식점";
     }
   };
@@ -34,7 +34,7 @@ export const usePlaces = () => {
         return activitiesData;
       case 32:
         return accommodationsData;
-      case 30:
+      case 39:
         return foodsData;
     }
   };
@@ -58,11 +58,8 @@ export const usePlaces = () => {
       let result = Array.from({ length: days }, () => []);
 
       simulationHistory.map((el) => {
-        // el.day
-        // el.contentid
-        // el.contentTypeId
-        const file = matchPlaceFileFromId(el.contentTypeId);
-        const item = getMatchingPlaceFromFile(file, el.contentid);
+        const file = matchPlaceFileFromId(parseInt(el.contentTypeId));
+        const item = getMatchingPlaceFromFile(file, parseInt(el.contentId));
         result[el.day - 1].push(item);
       });
       return result;
@@ -71,5 +68,9 @@ export const usePlaces = () => {
     }
   };
 
-  return { filterVisitedPlaces, getPlacesFromLocalDataWithHistory };
+  return {
+    matchPlaceTypeFromId,
+    filterVisitedPlaces,
+    getPlacesFromLocalDataWithHistory,
+  };
 };

@@ -11,9 +11,10 @@ export const fetchLocationBasedTourData = async (locationX, locationY, contentTy
 
     try {
         const res = await axios.get(url);
-        const items = res.data.response.body.items.item;
+        const items = res?.data?.response?.body?.items?.item;
         return items;
     } catch(error) {
+        console.log('에러야!!!!!')
         console.log(error);
     }
 }

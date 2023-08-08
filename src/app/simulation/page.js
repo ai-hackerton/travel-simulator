@@ -207,7 +207,7 @@ function SelectPlacePage() {
 function OverviewPage() {
   const [ overviewIndex, setOverviewIndex ] = useState(0);
   const [ showOption, setShowOption ] = useState(false);
-  const [ texts, setText ] = useState([""]);
+  const [ texts, setTexts ] = useState([""]);
   const { contentTypeId, contentId } = useCurrentStatus();
 
   // summary 또는 overview 불러와서 표시
@@ -218,7 +218,7 @@ function OverviewPage() {
     const splited = textData.split(separators);
     const filtered = splited.filter(text => text != "" && !(/^\(출처.*\)$/.test(text)) && !(/^<출처.*>$/.test(text)) && !(/^\[출처.*\]$/.test(text)));
     const trimmed = filtered.map(text => text.trim() + ".");
-    setText(trimmed);
+    setTexts(trimmed.slice(0, 3));
   }, []);
 
   
