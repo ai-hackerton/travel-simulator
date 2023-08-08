@@ -80,16 +80,27 @@ export default function SimulationPage() {
 
 // 0
 function ArrivalPage() {
-  const { simulationHistory } = useSimulationHistory();
+  const { simulationHistory, visitedPlaces } = useSimulationHistory();
   const { place } = useCurrentStatus();
-  const bottomText = `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`;
+
+  // 랜덤 출력
+  const bottomText = (place) => {
+    const randomText = [
+      `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`, 
+      `${place}에 도착~ 2`, 
+      `${place}에 도착~ 3`, 
+      `${place}에 도착~ 4`, 
+    ]
+    const randomIndex = Math.floor(Math.random() * randomText.length);
+    return randomText[randomIndex];
+  }
 
   console.log(simulationHistory);
 
   return (
     <>
       <PlaceLabel />
-      <BottomModal text={bottomText} canGoNext={true} />
+      <BottomModal text={bottomText(place)} canGoNext={true} />
     </>
   );
 }
@@ -97,7 +108,7 @@ function ArrivalPage() {
 // 1
 function SelectTypePage() {
   const { day } = useCurrentStatus();
-  const { simulationHistory } = useSimulationHistory();
+  const { simulationHistory, visitedPlaces } = useSimulationHistory();
   const { travelSettings } = useTravelSettingsStore();
   const [ text, setText ] = useState("");
   const [ endTheDay, setEndTheDay ] = useState();
@@ -139,6 +150,7 @@ function SelectTypePage() {
       <TypeOptionModal
         endTheDay={endTheDay}
         isLastDay={isLastDay}
+        first={visitedPlaces.length == 0}
       />
       <BottomModal text={text} canGoNext={false} />
     </>
