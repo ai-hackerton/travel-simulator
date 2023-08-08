@@ -32,6 +32,14 @@ import {
 import carImage from "/public/images/car.png";
 import useTravelSettingsStore from "../store/travelSettings";
 
+const jsonData = {
+  12: toursData,
+  14: culturalsData,
+  28: activitiesData,
+  32: accommodationsData,
+  39: foodsData
+}
+
 export default function SimulationPage() {
   const { currentIndex } = useSimulationIndex();
   const { location } = useCurrentStatus();
@@ -72,16 +80,27 @@ export default function SimulationPage() {
 
 // 0
 function ArrivalPage() {
-  const { simulationHistory } = useSimulationHistory();
+  const { simulationHistory, visitedPlaces } = useSimulationHistory();
   const { place } = useCurrentStatus();
-  const bottomText = `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`;
+
+  // 랜덤 출력
+  const bottomText = (place) => {
+    const randomText = [
+      `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`, 
+      `${place}에 도착~ 2`, 
+      `${place}에 도착~ 3`, 
+      `${place}에 도착~ 4`, 
+    ]
+    const randomIndex = Math.floor(Math.random() * randomText.length);
+    return randomText[randomIndex];
+  }
 
   console.log(simulationHistory);
 
   return (
     <>
       <PlaceLabel />
-      <BottomModal text={bottomText} canGoNext={true} />
+      <BottomModal text={bottomText(place)} canGoNext={true} />
     </>
   );
 }
@@ -89,7 +108,7 @@ function ArrivalPage() {
 // 1
 function SelectTypePage() {
   const { day } = useCurrentStatus();
-  const { simulationHistory } = useSimulationHistory();
+  const { simulationHistory, visitedPlaces } = useSimulationHistory();
   const { travelSettings } = useTravelSettingsStore();
   const [ text, setText ] = useState("");
   const [ endTheDay, setEndTheDay ] = useState();
@@ -131,6 +150,7 @@ function SelectTypePage() {
       <TypeOptionModal
         endTheDay={endTheDay}
         isLastDay={isLastDay}
+        first={visitedPlaces.length == 0}
       />
       <BottomModal text={text} canGoNext={false} />
     </>
@@ -202,14 +222,6 @@ function OverviewPage() {
   const [ texts, setTexts ] = useState([""]);
   const { contentTypeId, contentId } = useCurrentStatus();
 
-  const jsonData = {
-    12: toursData,
-    14: culturalsData,
-    28: activitiesData,
-    32: accommodationsData,
-    39: foodsData
-  }
-
   // summary 또는 overview 불러와서 표시
   useEffect(() => {
     const placeData = jsonData[contentTypeId][contentId];
@@ -268,10 +280,10 @@ function MovingPage() {
 
     // 오늘 스케줄 수 +1, ArrivalPage로 이동
     setTimeout(async () => {
-      // api로 title, mapx, mapy 불러오기 (장소명, 로드뷰 업데이트)
-      const data = await fetchTourDetailCommon(contentId);
-      setPlace(data.title);
-      setLocation(data.mapx, data.mapy);
+      // title, mapx, mapy (장소명, 로드뷰 업데이트)
+      const placeData = jsonData[contentTypeId][contentId];
+      setPlace(placeData.title);
+      setLocation(placeData.mapx, placeData.mapy);
 
       // 숙박 선택했으면 다음날로 넘어감 or 당일치기인 경우
       if (contentTypeId == 32) {
@@ -295,7 +307,7 @@ function MovingPage() {
           className="animate-bounce"
         />
       </div>
-      <BottomModal text={`~로 이동 중입니다`} canGoNext={false} />
+      <BottomModal text={`${jsonData[contentTypeId][contentId].title}(으)로 이동 중입니다`} canGoNext={false} />
     </>
   );
 }
