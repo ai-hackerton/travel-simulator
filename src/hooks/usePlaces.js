@@ -1,7 +1,13 @@
 import useSimulationHistory from "@/app/store/simulationHistory";
 
+import toursData from "/public/data/places/tours.json";
+import culturalsData from "/public/data/places/culturals.json";
+import foodsData from "/public/data/places/foods.json";
+import activitiesData from "/public/data/places/activities.json";
+import accommodationsData from "/public/data/places/accommodations.json";
+
 export const usePlaces = () => {
-  const { visitedPlaces } = useSimulationHistory();
+  const { visitedPlaces, simulationHistory } = useSimulationHistory();
 
   const matchPlaceTypeFromId = (typeId) => {
     switch (typeId) {
@@ -19,11 +25,23 @@ export const usePlaces = () => {
   };
 
   const filterVisitedPlaces = (arr) => {
-    let newArr = [...arr].filter((el) => {
+    let newArr = [...arr]?.filter((el) => {
       return !visitedPlaces.includes(el.contentid);
     });
     return newArr;
   };
+
+  const getPlacesFromLocalDataWithHistory = () => {
+    // let result = []
+    // simulationHistory.map((el) => {
+    //   el.day
+    //   el.contentid
+    //   el.contentTypeId
+
+    //   if (el.contentTypeId)
+    // })
+
+  }
 
   return { filterVisitedPlaces };
 };
