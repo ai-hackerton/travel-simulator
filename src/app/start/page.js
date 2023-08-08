@@ -52,9 +52,9 @@ export default function StartingPage() {
             <p className="font-medium text-white text-lg">
               당신의 이름을 알려주세요!
             </p>
-            <div className="w-full max-w-fit bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black">
+            <div className="w-full max-w-fit bg-white px-4 py-2 rounded-xl text-black">
               <input
-                className="w-full bg-white bg-opacity-80"
+                className="w-full bg-white"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
