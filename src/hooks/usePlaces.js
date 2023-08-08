@@ -1,4 +1,8 @@
+import useSimulationHistory from "@/app/store/simulationHistory";
+
 export const usePlaces = () => {
+  const { visitedPlaces } = useSimulationHistory();
+
   const matchPlaceTypeFromId = (typeId) => {
     switch (typeId) {
       case 12:
@@ -14,5 +18,13 @@ export const usePlaces = () => {
     }
   };
 
-  return {};
+  const filterVisitedPlaces = (arr) => {
+    let newArr = [...arr].filter((el) => {
+      return !visitedPlaces.includes(el.contentid);
+    });
+    console.log("neW!!!! ", newArr);
+    return newArr;
+  };
+
+  return { filterVisitedPlaces };
 };
