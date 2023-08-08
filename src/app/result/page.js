@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
-import resultImage from "public/images/resultImage.png";
-import resultImage2 from "public/images/resultImage.jpg";
+
 import defaultImage from "public/images/default-image.png";
 
 import useSimulationHistory from "../store/simulationHistory";
@@ -14,7 +13,8 @@ import { usePlaces } from "@/hooks/usePlaces";
 export default function Page() {
   const { simulationHistory } = useSimulationHistory();
   const { travelSettings } = useTravelSettingsStore();
-  const { getPlacesFromLocalDataWithHistory,matchPlaceTypeFromId } = usePlaces();
+  const { getPlacesFromLocalDataWithHistory, matchPlaceTypeFromId } =
+    usePlaces();
   const router = useRouter();
 
   const resultData = getPlacesFromLocalDataWithHistory();
@@ -35,24 +35,27 @@ export default function Page() {
   if (simulationHistory?.length && travelSettings) {
     return (
       <div className="h-screen bg-white overflow-y-scroll scrollbar-hide ">
-        {/* <Image
-        Images
-        src={resultImage2}
-        layout="fill"
-        objectFit="cover"
-        alt="배경화면"
-      /> */}
         <div
           className=" py-5 px-5 bg-black/0 backdrop-blur-[1px] inset-0  flex flex-col "
           //  style={{backgroundColor: 'red'}}
         >
+          <div className="text-light text-gray-600">{travelSettings?.name}님</div>
           <h2
-            className="text-2xl font-semibold mb-1  "
+            className="text-2xl font-semibold mb-1 text-main-200"
             style={{ alignSelf: "start" }}
           >
-            {city} 떠나는 여행
+            <span className="text-2xl text-black">행복한</span> {travelSettings?.city.slice(0, -1)} {travelSettings?.date} 
+            {/* 행복한  {city} {travelSettings.date}  */}
           </h2>
-          <div className="mb-5 text-base text-light text-gray-400">{travelSettings.date}</div>
+          <h2
+            className="text-xl font-base mb-5  "
+            style={{ alignSelf: "start" }}
+          >
+            여행 되세요!
+          </h2>
+          {/* <div className="mb-5 text-base text-light text-gray-400">
+            {travelSettings.date}
+          </div> */}
 
           <div className=" overflow-y-scroll flex flex-col scrollbar-hide ">
             {resultData?.map((el, idx) => {
@@ -81,7 +84,7 @@ export default function Page() {
                           style={{
                             height: "100%",
                             height: index < el.length - 1 ? 170 : 150,
-                
+
                             borderLeft: "1px dotted gray",
                             position: "absolute",
                             left: 10,
@@ -104,15 +107,15 @@ export default function Page() {
                           }}
                         >
                           {/* {index > 0 && index < el.length ? ( */}
-                            <div
-                              style={{
-                                width: 8,
-                                height: 8,
-                                borderRadius: 100,
-                                backgroundColor: "white",
-                              }}
-                            />
-                         {/* ) : null} */}
+                          <div
+                            style={{
+                              width: 8,
+                              height: 8,
+                              borderRadius: 100,
+                              backgroundColor: "white",
+                            }}
+                          />
+                          {/* ) : null} */}
                         </div>
 
                         {index === el.length - 1 ? (
@@ -131,7 +134,7 @@ export default function Page() {
                               left: 5,
                             }}
                           >
-                                <div
+                            <div
                               style={{
                                 width: 8,
                                 height: 8,
