@@ -51,12 +51,14 @@ export default function StartingPage() {
           <p className="font-medium text-white text-lg">
             당신의 이름을 알려주세요!
           </p>
-          <input
-            className="bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <div className="w-full">
+            <input
+              className="bg-white bg-opacity-80 px-4 py-2 rounded-xl text-black"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
         </>
       );
       break;
@@ -123,7 +125,7 @@ export default function StartingPage() {
           >
             안녕 눌러바..
           </div> */}
-          {city !== "" && <div className="text-white">{city}</div>}
+          {/* {city !== "" && <div className="text-white">{city}</div>} */}
         </>
       );
       break;
