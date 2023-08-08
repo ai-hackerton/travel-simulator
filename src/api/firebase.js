@@ -13,10 +13,10 @@ export const setData = async (data, path) => {
     }
 }
 
-// 중복 확인 + 이름 등록
+// 중복 확인 + 이름 등록 (start page)
 export const registerName = async (name) => {
     try {
-        var duplicateName = await nameExists(name);
+        var duplicateName = await userExists(name);
         if (!duplicateName) {
             await set(push(ref(database, "/users")), name);
             console.log("Upload successful");
@@ -31,19 +31,21 @@ export const registerName = async (name) => {
     }
 }
 
-// 이름 중복 확인
-export const nameExists = async (name) => {
+// 이름 & 기록 존재하는지 (시뮬레이션한 적 있는지) 확인
+export const userExists = async (name) => {
     try {
-        const snapshot = await get(ref(database, "/users"));
-        const userNames = snapshot.val();
-        return Object.values(userNames).includes(name);
+        const nameSnapshot = await get(ref(database, "/users"));
+        const nameExists = Object.values(nameSnapshot.val()).includes(name);
+        // const recordSnapshot = await get(ref(database, "/records/" + name));
+        // const recordExists = recordSnapshot.exists();
+        return nameExists;
     } catch (error) {
         console.log(error);
         return null;
     }
 }
 
-// 시뮬레이션 기록 파베에 업로드
+// 시뮬레이션 기록 파베에 업로드 (simulation page -> result page)
 export const uploadRecord = async (name, record) => {
     setData(record, "/records/" + name);
 }

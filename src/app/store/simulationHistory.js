@@ -13,6 +13,10 @@ const useSimulationHistory = create((set) => ({
           ? state.simulationHistory.slice(0, -1)
           : state.simulationHistory,
     })),
+    setSimulationHistory: (data) =>
+    set(() => ({
+      simulationHistory: data,
+    })),
   visitedPlaces: [],
   addVisitedPlaces: (item) =>
     set((state) => ({ visitedPlaces: [...state.visitedPlaces, item] })),

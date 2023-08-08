@@ -16,6 +16,12 @@ import useSimulationIndex from "../store/simulationIndex";
 import useCurrentStatus from "../store/currentStatus";
 import useSimulationHistory from "../store/simulationHistory";
 
+import toursData from "/public/data/places/tours.json";
+import culturalsData from "/public/data/places/culturals.json";
+import foodsData from "/public/data/places/foods.json";
+import activitiesData from "/public/data/places/activities.json";
+import accommodationsData from "/public/data/places/accommodations.json";
+
 //hooks
 import { usePlaces } from "@/hooks/usePlaces";
 
@@ -85,37 +91,46 @@ function SelectTypePage() {
   const { day } = useCurrentStatus();
   const { simulationHistory } = useSimulationHistory();
   const { travelSettings } = useTravelSettingsStore();
-  const [text, setText] = useState("");
-  const [end, setEnd] = useState();
+  const [ text, setText ] = useState("");
+  const [ endTheDay, setEndTheDay ] = useState();
+  const [ isLastDay, setIsLastDay ] = useState();
 
   useEffect(() => {
-    const today = simulationHistory.filter((x) => x.day == day).length;
-    if (today >= 5) {
-      if (
-        (travelSettings.date == "당일치기" && day == 1) ||
-        (travelSettings.date == "1박 2일" && day == 2) ||
-        (travelSettings.date == "2박 3일" && day == 3) ||
-        (travelSettings.date == "3박 4일" && day == 4)
-      ) {
-        setEnd(true);
+    if (
+      (travelSettings.date == "당일치기" && day == 1) ||
+      (travelSettings.date == "1박 2일" && day == 2) ||
+      (travelSettings.date == "2박 3일" && day == 3) ||
+      (travelSettings.date == "3박 4일" && day == 4)
+    ) {
+      setIsLastDay(true);
+    } else {
+      setIsLastDay(false);
+    }
+
+    if (simulationHistory.filter((x) => x.day == day).length >= 5) {
+      setEndTheDay(true);
+    } else {
+      setEndTheDay(false);
+    }
+
+    if (endTheDay) {
+      if (isLastDay) {
         setText("대충 일정 끝났으니 시뮬레이션 종료하자는 멘트");
       } else {
-        setEnd(false);
-        setText(
-          "오늘 벌써 5개의 일정을 소화했어요! 이제 그만 숙소에 가서 쉴까요?"
-        );
+        setText("오늘 벌써 5개의 일정을 소화했어요! 이제 그만 숙소에 가서 쉴까요?");
       }
     } else {
       setText("머시기~ 이제 어디를 가볼까요?");
     }
   }, []);
 
+
   return (
     <>
       <PlaceLabel />
       <TypeOptionModal
-        singleOption={simulationHistory.filter((x) => x.day == day).length >= 5}
-        end={end}
+        endTheDay={endTheDay}
+        isLastDay={isLastDay}
       />
       <BottomModal text={text} canGoNext={false} />
     </>
@@ -182,19 +197,33 @@ function SelectPlacePage() {
 
 // 3
 function OverviewPage() {
-  const [overviewIndex, setOverviewIndex] = useState(0);
-  const [showOption, setShowOption] = useState(false);
+  const [ overviewIndex, setOverviewIndex ] = useState(0);
+  const [ showOption, setShowOption ] = useState(false);
+  const [ texts, setTexts ] = useState([""]);
+  const { contentTypeId, contentId } = useCurrentStatus();
 
-  // 로컬에서 불러올 예정 (summary || overview)
-  const totalIndex = 3;
-  const texts = [
-    "개요 요약 1 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
-    "개요 요약 2 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
-    "개요 요약 3 ~~~~ ~~ ~~~~ ~~~ ~~~ ~~~~~~ ~~~~ ~~ ~~",
-  ];
+  const jsonData = {
+    12: toursData,
+    14: culturalsData,
+    28: activitiesData,
+    32: accommodationsData,
+    39: foodsData
+  }
 
+  // summary 또는 overview 불러와서 표시
+  useEffect(() => {
+    const placeData = jsonData[contentTypeId][contentId];
+    const textData = placeData.summary || placeData.overview;
+    const separators = /(?:\<br \/>|<br>|\.|\n)/;
+    const splited = textData.split(separators);
+    const filtered = splited.filter(text => text != "" && !(/^\(출처.*\)$/.test(text)) && !(/^<출처.*>$/.test(text)) && !(/^\[출처.*\]$/.test(text)));
+    const trimmed = filtered.map(text => text.trim() + ".");
+    setTexts(trimmed.slice(0, 3));
+  }, []);
+
+  
   const goNextIndex = () => {
-    if (overviewIndex < totalIndex - 1) {
+    if (overviewIndex < texts.length - 1) {
       // 사진 & 개요 넘기기
       setOverviewIndex(overviewIndex + 1);
     } else if (!showOption) {
