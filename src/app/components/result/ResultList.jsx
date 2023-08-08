@@ -138,9 +138,7 @@ export default function ResultList() {
                         fill={true}
                       />
                       <div
-                        className="backdrop-blur-[1px]
-                        bg-gradient-to-t from-black/60 text-white flex flex-col p-3 
-                        "
+                        className="backdrop-blur-[1px] bg-gradient-to-t from-black/60  flex flex-col p-3 "
                         style={{
                           position: "absolute",
                           right: 0,
@@ -150,7 +148,9 @@ export default function ResultList() {
                           justifyContent: "flex-end",
                         }}
                       >
-                        <p className="text-lg text-bold">{p.title}</p>
+                        <p className="text-lg text-bold font-medium text-white">
+                          {p.title}
+                        </p>
                       </div>
                     </div>
                   </div>
