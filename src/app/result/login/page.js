@@ -11,18 +11,18 @@ export default function Page() {
   // TODO: 더미 지우고 진짜 로그인 -> 가져오는 걸로 바꾸기
   const onMoveClick = () => {
     setSimulationHistory([
-      { day: 1, contentid: "2994116", contentTypeId: 12 },
-      { day: 1, contentid: "125658", contentTypeId: 12 },
-      { day: 1, contentid: "125593", contentTypeId: 12 },
-      { day: 1, contentid: "2798406", contentTypeId: 14 },
-      { day: 2, contentid: "125658", contentTypeId: 12 },
-      { day: 2, contentid: "125593", contentTypeId: 12 },
-      { day: 2, contentid: "2994116", contentTypeId: 12 },
-      { day: 2, contentid: "2798406", contentTypeId: 14 },
-      { day: 3, contentid: "2798406", contentTypeId: 14 },
-      { day: 3, contentid: "125658", contentTypeId: 12 },
-      { day: 3, contentid: "2994116", contentTypeId: 12 },
-      { day: 3, contentid: "125593", contentTypeId: 12 },
+      { day: 1, contentId: "2994116", contentTypeId: 12 },
+      { day: 1, contentId: "125658", contentTypeId: 12 },
+      { day: 1, contentId: "125593", contentTypeId: 12 },
+      { day: 1, contentId: "2798406", contentTypeId: 14 },
+      { day: 2, contentId: "125658", contentTypeId: 12 },
+      { day: 2, contentId: "125593", contentTypeId: 12 },
+      { day: 2, contentId: "2994116", contentTypeId: 12 },
+      { day: 2, contentId: "2798406", contentTypeId: 14 },
+      { day: 3, contentId: "2798406", contentTypeId: 14 },
+      { day: 3, contentId: "125658", contentTypeId: 12 },
+      { day: 3, contentId: "2994116", contentTypeId: 12 },
+      { day: 3, contentId: "125593", contentTypeId: 12 },
     ]);
 
     setTravelSettings({
