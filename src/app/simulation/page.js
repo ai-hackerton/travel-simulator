@@ -226,6 +226,7 @@ function MovingPage() {
     addEvent({
       day: day,
       contentId: contentId,
+      contentTypeId: contentTypeId,
     });
 
     // 오늘 스케줄 수 +1, ArrivalPage로 이동

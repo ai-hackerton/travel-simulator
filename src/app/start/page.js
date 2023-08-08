@@ -117,14 +117,6 @@ export default function StartingPage() {
             setIsCityClicked={setIsCityClicked}
           />
 
-          {/* <div
-            onClick={() => {
-              setCity("강릉시");
-            }}
-            style={{ backgroundColor: "red", width: 100, height: 100 }}
-          >
-            안녕 눌러바..
-          </div> */}
           {/* {city !== "" && <div className="text-white">{city}</div>} */}
         </>
       );
