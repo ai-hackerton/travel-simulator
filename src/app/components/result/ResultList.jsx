@@ -138,9 +138,8 @@ export default function ResultList() {
                         fill={true}
                       />
                       <div
-                        className="backdrop-blur-[1px]
-                        bg-gradient-to-t from-black/60 flex flex-col p-3 
-                        "
+                        className="backdrop-blur-[1px] bg-gradient-to-t from-black/60  flex flex-col p-3 "
+
                         style={{
                           position: "absolute",
                           right: 0,
