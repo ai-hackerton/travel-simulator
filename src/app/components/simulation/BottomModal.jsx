@@ -100,7 +100,7 @@ export default function BottomModal({ text, canGoNext, goNextIndex }) {
                 className="w-11/12 h-[126px] bg-black/70 rounded-[10px] shadow p-[17px] relative">
                 <Image src={robotImage} width={150} height={150} alt="로봇 이미지" className="absolute -top-[120px] -left-5" />
                 <div className="w-full h-full overflow-y-scroll">
-                    <p id="chat" className="text-center text-base text-white font-medium">
+                    <p id="chat" className="text-center text-base text-white font-medium whitespace-pre">
                         {currentText}
                     </p>
                 </div>

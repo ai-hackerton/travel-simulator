@@ -27,7 +27,6 @@ import { usePlaces } from "@/hooks/usePlaces";
 
 import {
   fetchLocationBasedTourData,
-  fetchTourDetailCommon,
 } from "@/api/tourApi";
 import carImage from "/public/images/car.png";
 import useTravelSettingsStore from "../store/travelSettings";
@@ -80,16 +79,15 @@ export default function SimulationPage() {
 
 // 0
 function ArrivalPage() {
-  const { simulationHistory, visitedPlaces } = useSimulationHistory();
+  const { simulationHistory } = useSimulationHistory();
   const { place } = useCurrentStatus();
 
   // 랜덤 출력
   const bottomText = (place) => {
     const randomText = [
-      `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 왔네요 하하~`, 
-      `${place}에 도착~ 2`, 
-      `${place}에 도착~ 3`, 
-      `${place}에 도착~ 4`, 
+      `휴.. 오늘 정말 덥죠?\n 드디어 ${place}에 도착했어요~`, 
+      `와~ ${place}에 도착했습니다~!`, 
+      `${place}에 도착했어요!\n주변을 한번 둘러볼까요?`, 
     ]
     const randomIndex = Math.floor(Math.random() * randomText.length);
     return randomText[randomIndex];
@@ -134,12 +132,12 @@ function SelectTypePage() {
 
     if (endTheDay) {
       if (isLastDay) {
-        setText("대충 일정 끝났으니 시뮬레이션 종료하자는 멘트");
+        setText("벌써 여행의 마지막이 다가왔어요..\n아쉽지만 여기서 시뮬레이션을 종료할까요?");
       } else {
-        setText("오늘 벌써 5개의 일정을 소화했어요! 이제 그만 숙소에 가서 쉴까요?");
+        setText("오늘 벌써 5개의 일정을 소화했어요!\n이제 그만 숙소에 가서 쉴까요?");
       }
     } else {
-      setText("머시기~ 이제 어디를 가볼까요?");
+      setText("이제 어떤 곳에 가볼까요?");
     }
   }, []);
 
@@ -167,15 +165,15 @@ function SelectPlacePage() {
   const bottomText = (contentTypeId) => {
     switch (contentTypeId) {
       case 12:
-        return "가까운 관광지 몇 군데를 추천해드릴게요~";
+        return "여행은 역시 관광이죠~\n가까운 관광지들을 추천해드릴게요!";
       case 14:
-        return "가까운 문화시설 몇 군데를 추천해드릴게요~";
+        return "문화시설에 관심이 있으시군요!\n주변에 이런 문화시설들이 있네요~";
       case 28:
-        return "레포츠를 즐길 수 있는 곳들이에요~";
+        return "액티비티를 원한다면 여기는 어떠세요?\n레포츠를 즐길 수 있는 곳들이에요!";
       case 32:
-        return "가까운 숙소 몇 군데를 추천해드릴게요~";
+        return "다음날을 위한 체력 관리는 필수죠!\n이곳에서 가장 가까운 숙소들이에요~";
       case 39:
-        return "가까운 음식점 몇 군데를 추천해드릴게요~";
+        return "금강산도 식후경이죠~\n가까운 음식점들을 찾아봤어요!";
     }
   };
 
@@ -226,11 +224,11 @@ function OverviewPage() {
   useEffect(() => {
     const placeData = jsonData[contentTypeId][contentId];
     const textData = placeData.summary || placeData.overview;
-    const separators = /(?:\<br \/>|<br>|\.|\n)/;
+    const separators = /(?:\<br \/>|<br>|\.\s+|\n)/;
     const splited = textData.split(separators);
     const filtered = splited.filter(text => text != "" && !(/^\(출처.*\)$/.test(text)) && !(/^<출처.*>$/.test(text)) && !(/^\[출처.*\]$/.test(text)));
-    const trimmed = filtered.map(text => text.trim() + ".");
-    setTexts(trimmed.slice(0, 3));
+    const trimmed = filtered.map(text => text.trim().endsWith(".") ? text.trim() : text.trim() + ".");
+    setTexts(trimmed);
   }, []);
 
   
@@ -238,8 +236,8 @@ function OverviewPage() {
     if (overviewIndex < texts.length - 1) {
       // 사진 & 개요 넘기기
       setOverviewIndex(overviewIndex + 1);
-    } else if (!showOption) {
-      // 선택지 띄우기 (여기로 결정 or 다른 장소 보기)
+    } 
+    if ((overviewIndex >= texts.length - 1 || overviewIndex > 2) && !showOption) {
       setShowOption(true);
     }
   };
@@ -260,10 +258,9 @@ function OverviewPage() {
 
 // 4
 function MovingPage() {
-  const { travelSettings } = useTravelSettingsStore();
   const { day, nextDay, contentTypeId, contentId, setPlace, setLocation } =
     useCurrentStatus();
-  const { simulationHistory, addEvent, visitedPlaces, addVisitedPlaces } =
+  const { addEvent, visitedPlaces, addVisitedPlaces } =
     useSimulationHistory();
   const { increaseIndex: goNextPage } = useSimulationIndex();
 
@@ -292,7 +289,7 @@ function MovingPage() {
 
       // 다음페이지
       goNextPage();
-    }, 2000);
+    }, 2500);
   }, []);
 
   return (

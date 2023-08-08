@@ -52,7 +52,7 @@ export const fetchTourDetailImage = async (contentId) => {
 
 export const getFilteredList = (placeList, contentTypeId, category) => {
 
-    if (!placeList) return [];
+    if (!placeList) return null;
 
     // 강원특별자치도 areacode: 32
     var placeList = placeList.filter(place => place.areacode == 32);
