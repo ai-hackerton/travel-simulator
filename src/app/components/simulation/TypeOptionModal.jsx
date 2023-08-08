@@ -9,7 +9,7 @@ import useTravelSettingsStore from "@/app/store/travelSettings";
 import { uploadRecord } from "@/api/firebase";
 import useSimulationHistory from "@/app/store/simulationHistory";
 
-export default function TypeOptionModal({ singleOption, end }) {
+export default function TypeOptionModal({ endTheDay, isLastDay }) {
   const router = useRouter();
 
   const { setContentTypeId } = useCurrentStatus();
@@ -30,8 +30,8 @@ export default function TypeOptionModal({ singleOption, end }) {
 
   return (
     <div className="w-full h-[242px] absolute top-[40%] transform -translate-y-1/2">
-      {singleOption ? (
-        end ? (
+      {endTheDay ? (
+        isLastDay ? (
           <div className="w-full h-full flex flex-col justify-center items-center space-y-2 relative">
             {/* TODO: 저장하고 결과페이지로 이동 */}
             <OptionButton
@@ -53,7 +53,9 @@ export default function TypeOptionModal({ singleOption, end }) {
           <OptionButton text="문화시설 갈래" onClick={() => handleClick(14)} />
           <OptionButton text="밥 먹을래" onClick={() => handleClick(39)} />
           <OptionButton text="레포츠 할래" onClick={() => handleClick(28)} />
-          <OptionButton text="숙소 갈래" onClick={() => handleClick(32)} />
+          {isLastDay ?
+            <OptionButton text="시뮬레이션 종료~" onClick={() => handleSimulationEnd()} /> :
+            <OptionButton text="숙소 갈래" onClick={() => handleClick(32)} />}
           {/* TODO: 여기도 오늘은 그만할래 버튼이 있으면 좋지 않을까 */}
         </div>
       )}
