@@ -24,7 +24,7 @@ export default function CarouselModal({ placeList }) {
     if (placeList && placeList.length == 0) {
         return <div className="w-auto h-[250px] mx-[4.17%] rounded-[10px] bg-gray-100/80 flex flex-col justify-center items-center shadow">
             <Image src={noDataRobot} width={108} height={108} alt="대체 이미지" />
-            <h3 className="text-sm text-gray-300 font-medium leading-5 mt-2">2km 이내에 일치하는 장소가</h3>
+            <h3 className="text-sm text-gray-300 font-medium leading-5 mt-2">20km 이내에 일치하는 장소가</h3>
             <h3 className="text-sm text-gray-300 font-medium leading-5">존재하지 않습니다</h3>
         </div>
     }
@@ -106,7 +106,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     if (distance < 1) {
         return `${Math.round(distance * 1000)}m`;
     } else {
-        return `${distance.toFixed(2)}km`;
+        return `${distance.toFixed(1)}km`;
     }
 }
 

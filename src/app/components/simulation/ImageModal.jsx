@@ -101,7 +101,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     if (distance < 1) {
         return `${Math.round(distance * 1000)}m`;
     } else {
-        return `${distance.toFixed(2)}km`;
+        return `${distance.toFixed(1)}km`;
     }
 }
 

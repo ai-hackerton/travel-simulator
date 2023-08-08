@@ -13,6 +13,7 @@ import MapSelect from "../components/start/MapSelect";
 //hooks
 import { useStartings } from "@/hooks/useStartings";
 import { contourDensity } from "d3";
+import { registerName } from "@/api/firebase";
 
 //data
 const DATES_ARR = ["당일치기", "1박 2일", "2박 3일", "3박 4일"];
@@ -28,6 +29,7 @@ export default function StartingPage() {
   const [transcript, setTranscript] = useState(""); // string: 음성 응답
   const [isDropdownOpen, setDropdownOpen] = useState(false); // boolean: 드롭다운 메뉴
   const { travelSettings, setTravelSettings } = useTravelSettingsStore(); // zustand: 여행 설정 데이터 저장
+  const [ alertMessage, setAlertMessage ] = useState(""); 
 
   const { filteredPlaces } = useStartings(city);
 
@@ -185,7 +187,18 @@ export default function StartingPage() {
   const handleNextProcess = (e) => {
     e.preventDefault();
     if (processStatus === 1 && name) {
-      setProcessStatus((prevStatus) => prevStatus + 1);
+      const login = async () => {
+        var success = await registerName(name); // 로그인(이름등록) 성공하면 true, 중복이거나 에러 나면 false 반환
+        if (success) {
+          setProcessStatus((prevStatus) => prevStatus + 1);
+        } else {
+          setAlertMessage("이미 존재하는 이름입니다");
+          setTimeout(() => {
+            setAlertMessage("");
+          }, 2000);
+        }
+      }
+      login();
     } else if (processStatus === 2) {
       setProcessStatus((prevStatus) => prevStatus + 1);
     } else if (processStatus === 3 && date) {
@@ -257,6 +270,17 @@ export default function StartingPage() {
         fov={100}
       />
       <StartingModal content={content} onClick={handleNextProcess} />
+      <AlertMessage message={alertMessage} />
     </>
   );
+}
+
+function AlertMessage({message}) {
+  if (message == "") return;
+
+  return (
+    <div className="absolute top-[30%] left-1/2 transform -translate-x-1/2 z-50 bg-black/70 rounded-full px-[17px] text-white text-base font-normal leading-8">
+      이미 존재하는 이름입니다
+    </div>
+  )
 }
