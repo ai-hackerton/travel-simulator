@@ -1,3 +1,4 @@
+import useSimulationHistory from "@/app/store/simulationHistory";
 import axios from "axios";
 
 const TOUR_API_KEY = process.env.NEXT_PUBLIC_TOUR_API_KEY;
@@ -50,27 +51,28 @@ export const fetchTourDetailImage = async (contentId) => {
 export const getFilteredList = (placeList, contentTypeId, category) => {
 
     // 강원특별자치도 areacode: 32
+    var placeList = placeList.filter(place => place.areacode == 32);
 
-    const sigungucode = {
-        강릉시: 1,
-        고성군: 2,
-        동해시: 3,
-        삼척시: 4,
-        속초시: 5,
-        양구군: 6,
-        양양군: 7,
-        영월군: 8,
-        원주시: 9,
-        인제군: 10,
-        정선군: 11,
-        철원군: 12,
-        춘천시: 13,
-        태백시: 14,
-        평창군: 15,
-        홍천군: 16,
-        화천군: 17,
-        횡성군: 18
-    };
+    // const sigungucode = {
+    //     강릉시: 1,
+    //     고성군: 2,
+    //     동해시: 3,
+    //     삼척시: 4,
+    //     속초시: 5,
+    //     양구군: 6,
+    //     양양군: 7,
+    //     영월군: 8,
+    //     원주시: 9,
+    //     인제군: 10,
+    //     정선군: 11,
+    //     철원군: 12,
+    //     춘천시: 13,
+    //     태백시: 14,
+    //     평창군: 15,
+    //     홍천군: 16,
+    //     화천군: 17,
+    //     횡성군: 18
+    // };
 
     // const categoryList = {
     //     12: ["전체", "자연", "역사", "휴양", "체험", "산업", "건축/조형물"],    //관광지
