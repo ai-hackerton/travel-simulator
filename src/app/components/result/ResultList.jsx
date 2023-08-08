@@ -119,7 +119,7 @@ export default function ResultList() {
                         fontSize: 14,
                       }}
                     >
-                      {matchPlaceTypeFromId(parseInt(p.contenttypeid))}
+                      {matchPlaceTypeFromId(parseInt(p?.contenttypeid))}
                     </p>
                     <div
                       className=" shadow"
