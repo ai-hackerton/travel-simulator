@@ -34,27 +34,27 @@ export default function TypeOptionModal({ endTheDay, isLastDay, first }) {
         isLastDay ? (
           <div className="w-full h-full flex flex-col justify-center items-center space-y-2 relative">
             <OptionButton
-              text="시뮬레이션 종료~"
+              text="응! 즐거운 여행이었어"
               onClick={() => handleSimulationEnd()}
             />
           </div>
         ) : (
           <div className="w-full h-full flex flex-col justify-center items-center space-y-2 relative">
             <OptionButton
-              text="그랭 이제 숙소 가서 쉬자"
+              text="응, 가서 푹 쉬는 게 좋겠어"
               onClick={() => handleClick(32)}
             />
           </div>
         )
       ) : (
         <div className="w-full h-full flex flex-col justify-center items-center space-y-2 relative">
-          <OptionButton text="관광지 갈래" onClick={() => handleClick(12)} />
-          <OptionButton text="문화시설 갈래" onClick={() => handleClick(14)} />
-          <OptionButton text="밥 먹을래" onClick={() => handleClick(39)} />
-          <OptionButton text="레포츠 할래" onClick={() => handleClick(28)} />
+          <OptionButton text="관광지에 가서 관광을 즐길래" onClick={() => handleClick(12)} />
+          <OptionButton text="근처의 문화시설이 궁금해" onClick={() => handleClick(14)} />
+          <OptionButton text="배고픈데 밥이나 먹으러 갈까" onClick={() => handleClick(39)} />
+          <OptionButton text="신나는 액티비티가 하고 싶어" onClick={() => handleClick(28)} />
           {isLastDay ?
-            !first && <OptionButton text="시뮬레이션 종료~" onClick={() => handleSimulationEnd()} /> :
-            <OptionButton text="숙소 갈래" onClick={() => handleClick(32)} />}
+            !first && <OptionButton text="응! 즐거운 여행이었어~" onClick={() => handleSimulationEnd()} /> :
+            <OptionButton text="숙소에 가서 푹 쉬고 싶어" onClick={() => handleClick(32)} />}
         </div>
       )}
     </div>
