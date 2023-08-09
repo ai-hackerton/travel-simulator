@@ -54,7 +54,7 @@ export const uploadRecord = async (name, record) => {
 export const getUserRecord = async (name) => {
     try {
         const record = await get(ref(database, "/records/" + name));
-        return record;
+        return record.val();
     } catch (error) {
         console.log(error);
         return null;
