@@ -53,7 +53,7 @@ export default function TypeOptionModal({ endTheDay, isLastDay, first }) {
           <OptionButton text="배고픈데 밥이나 먹으러 갈까" onClick={() => handleClick(39)} />
           <OptionButton text="신나는 액티비티가 하고 싶어" onClick={() => handleClick(28)} />
           {isLastDay ?
-            !first && <OptionButton text="응! 즐거운 여행이었어~" onClick={() => handleSimulationEnd()} /> :
+            !first && <OptionButton text="이제 그만 시뮬레이션을 종료할래" onClick={() => handleSimulationEnd()} /> :
             <OptionButton text="숙소에 가서 푹 쉬고 싶어" onClick={() => handleClick(32)} />}
         </div>
       )}
