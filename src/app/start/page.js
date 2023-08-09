@@ -279,7 +279,7 @@ function AlertMessage({message}) {
   if (message == "") return;
 
   return (
-    <div className="absolute top-[30%] left-1/2 transform -translate-x-1/2 z-50 bg-black/70 rounded-full px-[17px] text-white text-base font-normal leading-8">
+    <div className="absolute top-[20%] left-1/2 transform -translate-x-1/2 z-50 bg-black/70 rounded-full px-[17px] text-white text-base font-normal leading-8">
       이미 존재하는 이름입니다
     </div>
   )
