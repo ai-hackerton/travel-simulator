@@ -25,31 +25,39 @@ export default function ResultLoginBox() {
   const { setSimulationHistory } = useSimulationHistory();
 
   const onSubmit = async () => {
-    const res = await userExists(name);
-    if (res === true) {
-      const record = await getUserRecord(name);
+    if (name) {
+      const res = await userExists(name);
+      if (res === true) {
+        const record = await getUserRecord(name);
 
-      if (record) {
-        setTravelSettings(record.travelSettings);
-        setSimulationHistory(record.simulationHistory);
-        setAlertMessage("");
-        router.push('/result')
+        if (record) {
+          setTravelSettings(record.travelSettings);
+          setSimulationHistory(record.simulationHistory);
+          setAlertMessage("");
+          router.push('/result')
 
+        } else {
+          setAlertMessage("저장된 여행 일정이 없습니다");
+          setTimeout(() => {
+            setAlertMessage("");
+          }, 2000);
+        }
       } else {
-        setAlertMessage("저장된 여행 일정이 없습니다.");
+        setAlertMessage("저장된 이름이 없습니다");
+        setTimeout(() => {
+          setAlertMessage("");
+        }, 2000);
       }
-    } else {
-      setAlertMessage("저장된 이름이 없습니다. ");
     }
   };
 
 
   return (
     <div className="fixed top-0 left-0 w-screen h-screen flex flex-col justify-end items-center py-8 px-8">
-      <AlertMessage  message={alertMessage} />
+      <AlertMessage message={alertMessage} />
       <div
         className="w-full bg-black bg-opacity-80 text-white mb-12 px-4 pt-8 pb-4 rounded-xl flex flex-col justify-center items-center gap-y-4"
-        onClick={()=> onSubmit()}
+        onClick={() => onSubmit()}
       >
         <div className="flex flex-col items-center gap-y-4">
           <p className="font-medium text-white text-lg">
