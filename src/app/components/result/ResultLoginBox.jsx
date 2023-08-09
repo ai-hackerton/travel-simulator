@@ -37,13 +37,13 @@ export default function ResultLoginBox() {
           router.push('/result')
 
         } else {
-          setAlertMessage("저장된 여행 일정이 없습니다.");
+          setAlertMessage("저장된 여행 일정이 없습니다");
           setTimeout(() => {
             setAlertMessage("");
           }, 2000);
         }
       } else {
-        setAlertMessage("저장된 이름이 없습니다. ");
+        setAlertMessage("저장된 이름이 없습니다");
         setTimeout(() => {
           setAlertMessage("");
         }, 2000);
